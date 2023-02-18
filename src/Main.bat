@@ -20,7 +20,7 @@ SETLOCAL ENABLEDELAYEDEXPANSION
 SET argument_passed_to_this_script=%~1
 
 @REM "Including" another BATCH file containing global variables.
-CALL GlobalVariables.bat
+CALL src\GlobalVariables.bat
 
 GOTO :main
 
@@ -30,7 +30,7 @@ GOTO :main
     SETLOCAL
 
         @REM Calling functions in another BATCH file:
-        CALL Functions.bat :clear_screen
+        CALL src\Functions.bat :clear_screen
 
         ECHO Escaping the character ^"^^!^" on the string below. It is only necessary for testing when using SETLOCAL ENABLEDELAYEDEXPANSION globally.
         ECHO Hello World^^!
@@ -53,8 +53,8 @@ GOTO :main
         ECHO The value of y before calling Functions.bat :add_one is !y!.
         ECHO.
 
-        CALL Functions.bat :add_one x
-        CALL Functions.bat :add_one y
+        CALL src\Functions.bat :add_one x
+        CALL src\Functions.bat :add_one y
 
         ECHO The value of x after calling Functions.bat :add_one is !x!.
         ECHO The value of y after calling Functions.bat :add_one is !y!.

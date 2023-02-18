@@ -31,11 +31,22 @@ application.
 <project_root>
 |- resources                    (good to have and needed files)
     |- img                      (images containing useful information)
+|- src                          (the example app)
 
 ```
 
 
 
 ## Which file will be executed?
-Using this starter kit, the Main.bat (``<project_root>/Main.bat``) will be
+Using this starter kit, the Main.bat (``<project_root>\src\Main.bat``) will be
 the file being executed.
+
+### From where you run it makes a big difference.
+
+If you want to run it from the **<project_root>**, type ``src\Main.bat``. The code
+inside the main script was written to be run from the root.
+
+If you change the directory to the ``src`` folder (``cd src``), you will have to
+change the code inside ``src\Main.bat``, because the "import" of the global
+variables and the functions have the ``src`` as a prefix
+(``CALL src\Functions.bat :clear_screen``).
