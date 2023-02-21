@@ -1,8 +1,10 @@
 @REM This script is used for storing functions in this example app.
 @REM
 @REM HOW TO USE THIS FILE:
-@REM    From the Main.bat file, inside the :main function, use as follows:
-@REM    CALL Functions.bat :function_name argument_name
+@REM    This boilerplate app is meant to be run from the project root.
+@REM
+@REM    From the Main.bat file, inside the :main function, use it as follows:
+@REM    CALL src\Functions.bat :function_name argument_name
 @REM
 @REM REFERENCES:
 @REM    How to package all my functions in a batch file as a seperate file?
@@ -58,6 +60,9 @@ GOTO :EOF
 
 :clear_screen
     @REM Clears the screen.
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\Functions.bat :clear_screen
 
     SETLOCAL
 
@@ -75,7 +80,7 @@ GOTO :EOF
     @REM %~2: String inside quotes.
     @REM
     @REM How to use this function:
-    @REM    CALL :create_string variable_name "Everything INSIDE the quotation marks."
+    @REM    CALL src\Functions.bat :create_string variable_name "Everything INSIDE the quotation marks."
     @REM    ECHO !variable_name!
     @REM    ECHO !variable_name.length!
 
@@ -126,6 +131,9 @@ GOTO :EOF
 
 :header
     @REM Prints a message that is easy to read.
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\Functions.bat :header "Header string"
 
     SETLOCAL
 
@@ -138,7 +146,9 @@ GOTO :EOF
 
 
 :multiline_string_into_variable
-    @REM Inserts a multiline string into a variable
+    @REM Inserts a multiline string into a variable.
+    @REM This function is only an example and it is not meant to be called.
+    @REM It just shows how to do it.
 
     SETLOCAL
 
@@ -164,7 +174,10 @@ GOTO :EOF
 
 
 :print_message
-    @REM Prints a message that is easy to read.
+    @REM Prints a message in CMD that is easy to read.
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\Functions.bat :print_message "Message string"
 
     SETLOCAL
 
@@ -181,6 +194,8 @@ GOTO :EOF
 
 :read_file_content_into_variable
     @REM Reads the file content into a variable.
+    @REM This function is only an example and it is not meant to be called.
+    @REM It just shows how to do it.
 
     SETLOCAL
 
@@ -194,8 +209,8 @@ GOTO :EOF
 
         @REM @REM OPTION 2 (This is bad and should not be used!)
         @REM @REM -------------------------------------------------------------------
-        @REM @REM Has problems with special characters like !
-        @REM @REM Does not keep the empty lines.
+        @REM @REM It has problems with special characters like !
+        @REM @REM It does not keep the empty lines.
 
         @REM @REM Two empty lines are required below this line.
         @REM SET LF=^

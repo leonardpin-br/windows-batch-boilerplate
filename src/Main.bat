@@ -32,36 +32,40 @@ GOTO :main
         @REM Calling functions in another BATCH file:
         CALL src\Functions.bat :clear_screen
 
-        ECHO Escaping the character ^"^^!^" on the string below. It is only necessary for testing when using SETLOCAL ENABLEDELAYEDEXPANSION globally.
-        ECHO Hello World^^!
-        ECHO.
-        ECHO.
+        @REM ECHO Escaping the character ^"^^!^" on the string below. It is only necessary for testing when using SETLOCAL ENABLEDELAYEDEXPANSION globally.
+        @REM ECHO Hello World^^!
+        @REM ECHO.
+        @REM ECHO.
 
-        ECHO Argument passed to this script:
-        ECHO !argument_passed_to_this_script!
-        ECHO.
+        @REM ECHO Argument passed to this script:
+        @REM ECHO !argument_passed_to_this_script!
+        @REM ECHO.
 
-        ECHO Global variable inside GlobalVariables.bat:
-        ECHO !global_var!
+        @REM ECHO Global variable inside GlobalVariables.bat:
+        @REM ECHO !global_var!
+        @REM ECHO.
+        @REM ECHO.
+
+        @REM SET /A x=1
+        @REM SET /A y=50
+
+        @REM ECHO The value of x before calling Functions.bat :add_one is !x!.
+        @REM ECHO The value of y before calling Functions.bat :add_one is !y!.
+        @REM ECHO.
+
+        @REM CALL src\Functions.bat :add_one x
+        @REM CALL src\Functions.bat :add_one y
+
+        @REM ECHO The value of x after calling Functions.bat :add_one is !x!.
+        @REM ECHO The value of y after calling Functions.bat :add_one is !y!.
+
+        CALL src\Functions.bat :create_string variable_name "One"
+        ECHO !variable_name!
+        ECHO !variable_name.length!
+
         ECHO.
         ECHO.
-
-        SET /A x=1
-        SET /A y=50
-
-        ECHO The value of x before calling Functions.bat :add_one is !x!.
-        ECHO The value of y before calling Functions.bat :add_one is !y!.
-        ECHO.
-
-        CALL src\Functions.bat :add_one x
-        CALL src\Functions.bat :add_one y
-
-        ECHO The value of x after calling Functions.bat :add_one is !x!.
-        ECHO The value of y after calling Functions.bat :add_one is !y!.
-
-        ECHO.
-        ECHO.
-        PAUSE
+        @REM PAUSE
 
     ENDLOCAL
     GOTO :EOF
