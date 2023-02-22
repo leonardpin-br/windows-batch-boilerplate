@@ -73,6 +73,103 @@ GOTO :EOF
     GOTO :EOF
 
 
+:create_array
+    @REM Creates an array.
+    @REM
+    @REM When this function is called, the array is given in the form of a
+    @REM string. As such, the given array is treated as a string. The procedures
+    @REM are based on string manipulation.
+    @REM
+    @REM This function DOES NOT WORK WITH SPACE as a delimiter. It is advisable
+    @REM to use "," as delimiters. But, it will work with other characters like
+    @REM "=". Spaces can be used after the delimiter like ", ".
+    @REM
+    @REM %~1: Array name.
+    @REM %~2: Delimiter.
+    @REM %~3: Array content inside quotes separated by delimiter.
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\Functions.bat :create_array array_name "<delimiter>" "List inside quotes separeted by delimiter"
+    @REM    CALL src\Functions.bat :create_array grocery_list "," "Apples, Bananas, Meat, Soap, Tomato"
+    @REM    ECHO Array content: !grocery_list!
+    @REM    ECHO Array length: !grocery_list.length!
+    @REM    ECHO Index 1 from array: !grocery_list[1]!
+
+    SETLOCAL
+
+        @REM To be able to set the array indexes, it was necessary to work this
+        @REM function in the block below.
+
+    ( ENDLOCAL & REM
+
+        @REM Sets the indexes of each item in the array.
+        @REM -------------------------------------------------------------------
+
+        CALL src\Functions.bat :create_string string_delimiter "%~2"
+        CALL src\Functions.bat :create_string string_content "%~3"
+
+        @REM Index position, in the string given to create the array, immediately after the delimiter.
+        SET /A string_offset=0
+
+        @REM Array index, that has to be incremented for each item.
+        SET /A array_index=0
+
+        @REM Loops through all characters of the string given to create the array.
+        FOR /L %%i IN ( 0, 1, !string_content.length!-1 ) DO (
+
+            @REM The variable character is a substring of only one character.
+            SET character=!string_content:~%%i,1!
+
+            @REM The quotes are necessary to work with the string form of variables.
+            IF "!character!" EQU "!string_delimiter!" (
+
+                @REM length of each item in the array.
+                @REM It is calculated subtracting the string_offset from the current value of the iterator.
+                SET /A item_length=%%i-!string_offset!
+
+                @REM In order to avoid two variable expansions, one inside
+                @REM another, we call :set_index.
+                @REM The third argument below is the string form of the substring.
+                CALL src\Functions.bat :set_index %~1 !array_index! "string_content:~!string_offset!,!item_length!"
+
+                @REM Adds one to the string_offset to start (on the string) after the delimiter.
+                SET /A string_offset=%%i+1
+
+                @REM Increments the array index.
+                SET /A array_index=!array_index!+1
+
+            )
+
+        )
+
+        @REM The last array item has no delimiter after it.
+        CALL src\Functions.bat :set_index %~1 !array_index! "string_content:~!string_offset!,!string_content.length!"
+
+        @REM The sum below adjusts the index to the total number of items in the array.
+        SET /A array.length=!array_index!+1
+
+        @REM Array_name receives the value (the entire array as a string).
+        @REM -------------------------------------------------------------------
+
+        IF "%~1" NEQ "" SET %~1=!string_content!
+
+        @REM Sets the array.length property.
+        @REM -------------------------------------------------------------------
+
+        IF "%~1.length" NEQ "" SET /A %~1.length=!array.length!
+
+        @REM Clears the values of those variables.
+        SET string_content=
+        SET item_length=
+        SET string_offset=
+        SET character=
+        SET string_delimiter=
+        SET array_index=
+
+    )
+    GOTO :EOF
+
+
 :create_string
     @REM Creates a string.
     @REM
@@ -87,7 +184,7 @@ GOTO :EOF
     SETLOCAL
 
         @REM Local variable to hold the string length.
-        SET string.length=0
+        SET /A string.length=0
 
         @REM Removes from the count the extra bytes.
         SET /A takeaway=2
@@ -124,7 +221,7 @@ GOTO :EOF
 
     ( ENDLOCAL & REM
         IF "%~1" NEQ "" SET %~1=%string%
-        IF "%~1.length" NEQ "" SET %~1.length=%string.length%
+        IF "%~1.length" NEQ "" SET /A %~1.length=%string.length%
     )
     GOTO :EOF
 
@@ -226,4 +323,29 @@ GOTO :EOF
         ECHO !file_content!
 
     ENDLOCAL
+    GOTO :EOF
+
+
+:set_index
+    @REM Auxiliary function used by :create_array to avoid two variable
+    @REM expansions, one inside another.
+    @REM
+    @REM %~1: Array name.
+    @REM %~2: Array index.
+    @REM %~3: Index content inside quotes in the form of a substring with
+    @REM      two variable expansions.
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\Functions.bat :set_index %~1 !array_index! "string_content:~!string_offset!,!item_length!"
+
+    SETLOCAL
+
+    @REM To be able to return back the values passed, it was necessary to work
+    @REM inside the block below.
+
+    ( ENDLOCAL & REM
+
+        CALL src\Functions.bat :create_string %~1[%~2] "!%~3!"
+
+    )
     GOTO :EOF

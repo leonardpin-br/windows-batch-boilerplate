@@ -59,9 +59,18 @@ GOTO :main
         @REM ECHO The value of x after calling Functions.bat :add_one is !x!.
         @REM ECHO The value of y after calling Functions.bat :add_one is !y!.
 
-        CALL src\Functions.bat :create_string variable_name "One"
-        ECHO !variable_name!
-        ECHO !variable_name.length!
+        @REM CALL src\Functions.bat :create_string variable_name "One"
+        @REM ECHO !variable_name!
+        @REM ECHO !variable_name.length!
+
+        CALL src\Functions.bat :create_array grocery_list "," "Apples, Bananas, Meat, Soap, Tomato"
+        ECHO Array content: !grocery_list!
+        ECHO Array length: !grocery_list.length!
+        ECHO Index 0 from array: !grocery_list[0]!
+        ECHO Index 1 from array: !grocery_list[1]!
+        ECHO Index 2 from array: !grocery_list[2]!
+        ECHO Index 3 from array: !grocery_list[3]!
+        ECHO Index 4 from array: !grocery_list[4]!
 
         ECHO.
         ECHO.
