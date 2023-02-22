@@ -1,10 +1,15 @@
 @REM This script is used for storing functions in this example app.
 @REM
+@REM With SETLOCAL inside each function, any variable declared inside the caller
+@REM function (probably :main) will be "visible" inside the called function.
+@REM No variables created (SET) inside the called function will be "visible"
+@REM inside the caller function.
+@REM
 @REM HOW TO USE THIS FILE:
 @REM    This boilerplate app is meant to be run from the project root.
 @REM
 @REM    From the Main.bat file, inside the :main function, use it as follows:
-@REM    CALL src\Functions.bat :function_name argument_name
+@REM    CALL src\Functions.bat :function_name argument
 @REM
 @REM REFERENCES:
 @REM    How to package all my functions in a batch file as a seperate file?
@@ -36,11 +41,74 @@ IF "%~1" NEQ "" (
 GOTO :EOF
 
 
-@REM With SETLOCAL inside the function, any variable declared inside :main
-@REM will be "visible" inside :add_one.
-@REM No variables created (SET) inside :add_one will be "visible" inside :main.
+:_DO_NOT_CALL_multiline_string_into_variable
+    @REM Inserts a multiline string into a variable.
+    @REM This function is only an example and it is not meant to be called.
+    @REM It just shows how to do it.
+
+    SETLOCAL
+
+        CALL :header "Inserts a multiline string into a variable"
+        @REM Two empty lines are required below this line.
+        SET LF=^
+
+
+        @REM Two empty lines are required above this line.
+        SET multiLine=This is a;!LF!
+        SET multiLine=!multiLine!text with 2 lines%%!LF!
+        SET multiLine=!multiLine!!LF!
+        SET multiLine=!multiLine!1 empty line and a 4 line^^!
+
+        @REM Prints the line on the screen.
+        ECHO !multiLine!
+
+        @REM Sends the multiline to a file.
+        ECHO !multiLine!> multiline_variable_into_file.txt
+
+    ENDLOCAL
+    GOTO :EOF
+
+
+:_DO_NOT_CALL_read_file_content_into_variable
+    @REM Reads the file content into a variable.
+    @REM This function is only an example and it is not meant to be called.
+    @REM It just shows how to do it.
+
+    SETLOCAL
+
+        CALL :header "Reads the file's content into a variable"
+
+        @REM OPTION 1 (only one that really works!):
+        @REM -------------------------------------------------------------------
+        @REM Avoids problems with special characters like ; % !
+        SET /P file_content=<multiline_variable_into_file.txt
+
+
+        @REM @REM OPTION 2 (This is bad and should not be used!)
+        @REM @REM -------------------------------------------------------------------
+        @REM @REM It has problems with special characters like !
+        @REM @REM It does not keep the empty lines.
+
+        @REM @REM Two empty lines are required below this line.
+        @REM SET LF=^
+
+
+        @REM @REM Two empty lines are required above this line.
+        @REM FOR /F "tokens=* delims=" %%i IN (multiline_variable_into_file.txt) DO (
+        @REM     SET "file_content=!file_content!%%i!LF!"
+        @REM )
+
+        ECHO !file_content!
+
+    ENDLOCAL
+    GOTO :EOF
+
+
 :add_one
+    @REM Example function that shows how to return (change the argument passed
+    @REM in) a value.
     @REM Adds one to the number given as argument.
+    @REM
     @REM %~1: Number to add one.
 
     SETLOCAL
@@ -160,11 +228,11 @@ GOTO :EOF
 
         @REM Clears the values of those variables.
         SET string_content=
-        SET item_length=
-        SET string_offset=
+        SET /A item_length=0
+        SET /A string_offset=0
         SET character=
         SET string_delimiter=
-        SET array_index=
+        SET /A array_index=0
 
     )
     GOTO :EOF
@@ -242,34 +310,6 @@ GOTO :EOF
     GOTO :EOF
 
 
-:multiline_string_into_variable
-    @REM Inserts a multiline string into a variable.
-    @REM This function is only an example and it is not meant to be called.
-    @REM It just shows how to do it.
-
-    SETLOCAL
-
-        CALL :header "Inserts a multiline string into a variable"
-        @REM Two empty lines are required below this line.
-        SET LF=^
-
-
-        @REM Two empty lines are required above this line.
-        SET multiLine=This is a;!LF!
-        SET multiLine=!multiLine!text with 2 lines%%!LF!
-        SET multiLine=!multiLine!!LF!
-        SET multiLine=!multiLine!1 empty line and a 4 line^^!
-
-        @REM Prints the line on the screen.
-        ECHO !multiLine!
-
-        @REM Sends the multiline to a file.
-        ECHO !multiLine!> multiline_variable_into_file.txt
-
-    ENDLOCAL
-    GOTO :EOF
-
-
 :print_message
     @REM Prints a message in CMD that is easy to read.
     @REM
@@ -284,43 +324,6 @@ GOTO :EOF
         ECHO %~1
         ECHO.
         ECHO ===================================================================
-
-    ENDLOCAL
-    GOTO :EOF
-
-
-:read_file_content_into_variable
-    @REM Reads the file content into a variable.
-    @REM This function is only an example and it is not meant to be called.
-    @REM It just shows how to do it.
-
-    SETLOCAL
-
-        CALL :header "Reads the file's content into a variable"
-
-        @REM OPTION 1 (only one that really works!):
-        @REM -------------------------------------------------------------------
-        @REM Avoids problems with special characters like ; % !
-        SET /P file_content=<multiline_variable_into_file.txt
-
-
-        @REM @REM OPTION 2 (This is bad and should not be used!)
-        @REM @REM -------------------------------------------------------------------
-        @REM @REM It has problems with special characters like !
-        @REM @REM It does not keep the empty lines.
-
-        @REM @REM Two empty lines are required below this line.
-        @REM SET LF=^
-
-
-        @REM @REM Two empty lines are required above this line.
-        @REM FOR /F "tokens=* delims=" %%i IN (multiline_variable_into_file.txt) DO (
-        @REM     SET "file_content=!file_content!%%i!LF!"
-        @REM )
-
-
-
-        ECHO !file_content!
 
     ENDLOCAL
     GOTO :EOF
