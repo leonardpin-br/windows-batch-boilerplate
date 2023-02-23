@@ -345,7 +345,7 @@ GOTO :EOF
     @REM %~5 (Optional): Range step. Defaults to 1.
     @REM
     @REM How to use this function:
-    @REM    CALL src\Functions.bat :range array_name delimiter start stop step
+    @REM    CALL src\Functions.bat :range array_name "delimiter" start stop step
 
     SETLOCAL
 
@@ -407,6 +407,59 @@ GOTO :EOF
     ( ENDLOCAL & REM
 
         CALL src\Functions.bat :create_string %~1[%~2] "!%~3!"
+
+    )
+    GOTO :EOF
+
+
+:sort
+    @REM Sorts, in ascending order, the elements of a given array.
+    @REM
+    @REM %~1: Array name.
+    @REM %~2: Delimiter.
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\Functions.bat :sort array_name "delimiter"
+
+    SETLOCAL
+
+        SET array_name=%~1
+        CALL src\Functions.bat :create_string delimiter "%~2"
+
+        SET /A for_upper_limit=!%~1.length!-1
+
+        FOR /L %%i IN ( 0, 1, !for_upper_limit! ) DO (
+
+            FOR /L %%j IN ( %%i, 1, !for_upper_limit! ) DO (
+
+                IF !%~1[%%i]! GTR !%~1[%%j]! (
+
+                    SET /A temporary=!%~1[%%i]!
+                    CALL src\Functions.bat :create_string !array_name![%%i] "!%~1[%%j]!"
+                    CALL src\Functions.bat :create_string !array_name![%%j] "!temporary!"
+
+                )
+
+            )
+
+        )
+
+        FOR /L %%i IN ( 0, 1, !for_upper_limit! ) DO (
+
+            SET content=!content!!%~1[%%i]!
+
+            @REM If not in the end of the loop.
+            IF NOT %%i EQU !for_upper_limit! (
+
+                SET content=!content!!delimiter!
+
+            )
+
+        )
+
+    ( ENDLOCAL & REM
+
+        CALL src\Functions.bat :create_array %array_name% "%delimiter%" "%content%"
 
     )
     GOTO :EOF

@@ -95,8 +95,18 @@ GOTO :main
         @REM CALL src\Math.bat :abs 420218 absolute_value
         @REM ECHO Absolute value: !absolute_value!
 
-        CALL src\Functions.bat :range numbers "," 15 30 5
-        ECHO !numbers.length!
+        @REM CALL src\Functions.bat :range numbers "," 15 30 5
+        @REM ECHO !numbers.length!
+
+        @REM CALL src\Functions.bat :create_array numbers "," "100,1,10"
+        @REM CALL src\Math.bat :sum numbers total
+        @REM ECHO !total!
+
+        CALL src\Functions.bat :create_array numbers "," "23,4,635,43,74,2,765,3,7,45,876"
+        ECHO !numbers!
+        CALL src\Functions.bat :sort numbers ","
+        ECHO !numbers!
+        ECHO !numbers[0]!
 
         ECHO.
         ECHO.
