@@ -89,8 +89,11 @@ GOTO :main
         @REM CALL src\Math.bat :max list_of_numbers maximum_value
         @REM ECHO Maximum value: !maximum_value!
 
-        CALL src\Math.bat :pow 2 1 power_result
-        ECHO Power result: !power_result!
+        @REM CALL src\Math.bat :pow 2 1 power_result
+        @REM ECHO Power result: !power_result!
+
+        CALL src\Math.bat :abs 420218 absolute_value
+        ECHO Absolute value: !absolute_value!
 
         ECHO.
         ECHO.

@@ -154,3 +154,33 @@ GOTO :EOF
         IF "%~3" NEQ "" SET %~3=%product%
     )
     GOTO :EOF
+
+
+:abs
+    @REM Absolute value refers to the positive value corresponding to the number
+    @REM passed in as argument.
+    @REM
+    @REM %~1: Number (positive or negative).
+    @REM %~2: Return name.
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\Math.bat :abs number return_name
+
+    SETLOCAL
+
+        SET /A absolute_value=%~1
+
+        IF %~1 LSS 0 (
+
+            SET /A absolute_value=%~1*-1
+
+        ) ELSE (
+
+            SET /A absolute_value=%~1
+
+        )
+
+    ( ENDLOCAL & REM
+        IF "%~2" NEQ "" SET %~2=%absolute_value%
+    )
+    GOTO :EOF
