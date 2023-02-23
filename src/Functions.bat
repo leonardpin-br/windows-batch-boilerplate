@@ -30,12 +30,12 @@ IF "%~1" NEQ "" (
     ) || (
 
         @REM Only runs this command if the first one fails.
-        >&2 CALL :print_message "ERROR: Function %~1 not found inside %~nx0."
+        >&2 CALL src\Functions.bat :print_message "ERROR: Function %~1 not found inside %~nx0."
 
     )
 
 @REM If the function name was not given (like CALL Functions.bat):
-) ELSE >&2 CALL :print_message "ERROR: Missing the function name when calling %~nx0."
+) ELSE >&2 CALL src\Functions.bat :print_message "ERROR: Missing the function name when calling %~nx0."
 
 
 GOTO :EOF
@@ -306,46 +306,6 @@ GOTO :EOF
         ECHO ===================================================================
 
     ENDLOCAL
-    GOTO :EOF
-
-
-:min
-    @REM The :min function returns the lowest value in an array.
-    @REM
-    @REM If 0 is part of the array, it must be scaped like (534,-2,^0).
-    @REM
-    @REM %~1: Array name.
-    @REM %~2: Return name.
-    @REM
-    @REM How to use this function:
-    @REM    CALL src\Functions.bat :min array_name return_name
-
-    SETLOCAL
-
-        SET /A for_upper_limit=!%~1.length!-1
-
-        FOR /L %%i IN ( 0, 1, !for_upper_limit! ) DO (
-
-            @REM If it is the first item in the array, sets the minimum as the first.
-            IF %%i EQU 0 (
-
-                SET /A minimum=!%~1[%%i]!
-
-            ) ELSE (
-
-                IF !%~1[%%i]! LSS !minimum! (
-
-                    SET /A minimum=!%~1[%%i]!
-
-                )
-
-            )
-
-        )
-
-    ( ENDLOCAL & REM
-        IF "%~2" NEQ "" SET %~2=%minimum%
-    )
     GOTO :EOF
 
 

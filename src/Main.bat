@@ -72,18 +72,25 @@ GOTO :main
         @REM ECHO Index 3 from array: !grocery_list[3]!
         @REM ECHO Index 4 from array: !grocery_list[4]!
 
-        CALL src\Functions.bat :create_array list_of_numbers "," "45,534,2,65,-2,-34,1,^0"
-        ECHO !list_of_numbers!
-        ECHO !list_of_numbers[0]!
-        ECHO !list_of_numbers[1]!
-        ECHO !list_of_numbers[2]!
-        ECHO !list_of_numbers[3]!
-        ECHO !list_of_numbers[4]!
-        ECHO !list_of_numbers[5]!
-        ECHO !list_of_numbers[6]!
-        ECHO !list_of_numbers[7]!
-        CALL src\Functions.bat :min list_of_numbers minimum_value
-        ECHO Minimum value: !minimum_value!
+        @REM CALL src\Functions.bat :create_array list_of_numbers "," "45,534,2,65,-2,-34,1,^0"
+        @REM ECHO !list_of_numbers!
+        @REM ECHO !list_of_numbers[0]!
+        @REM ECHO !list_of_numbers[1]!
+        @REM ECHO !list_of_numbers[2]!
+        @REM ECHO !list_of_numbers[3]!
+        @REM ECHO !list_of_numbers[4]!
+        @REM ECHO !list_of_numbers[5]!
+        @REM ECHO !list_of_numbers[6]!
+        @REM ECHO !list_of_numbers[7]!
+        @REM CALL src\Math.bat :min list_of_numbers minimum_value
+        @REM ECHO Minimum value: !minimum_value!
+
+        @REM CALL src\Functions.bat :create_array list_of_numbers "," "45, 534, 2, 65, -2, -34, 1, ^0"
+        @REM CALL src\Math.bat :max list_of_numbers maximum_value
+        @REM ECHO Maximum value: !maximum_value!
+
+        CALL src\Math.bat :pow 2 1 power_result
+        ECHO Power result: !power_result!
 
         ECHO.
         ECHO.
