@@ -92,8 +92,11 @@ GOTO :main
         @REM CALL src\Math.bat :pow 2 1 power_result
         @REM ECHO Power result: !power_result!
 
-        CALL src\Math.bat :abs 420218 absolute_value
-        ECHO Absolute value: !absolute_value!
+        @REM CALL src\Math.bat :abs 420218 absolute_value
+        @REM ECHO Absolute value: !absolute_value!
+
+        CALL src\Functions.bat :range numbers "," 15 30 5
+        ECHO !numbers.length!
 
         ECHO.
         ECHO.

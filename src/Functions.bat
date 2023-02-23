@@ -147,9 +147,15 @@ GOTO :EOF
     @REM string. As such, the given array is treated as a string. The procedures
     @REM are based on string manipulation.
     @REM
-    @REM This function DOES NOT WORK WITH SPACE as a delimiter. It is advisable
-    @REM to use "," as delimiters. But, it will work with other characters like
-    @REM "=". Spaces can be used after the delimiter like ", ".
+    @REM Warning:
+    @REM    Spaces SHOULD NOT be used in the string given to create the array.
+    @REM
+    @REM    Spaces MUST NOT be used after the delimiter like ", ".
+    @REM    As this function is used by other functions, the spaces create a
+    @REM    hard to track bug.
+    @REM
+    @REM    It is advisable to use "," as delimiters. But, it will work with
+    @REM    other characters like "=".
     @REM
     @REM %~1: Array name.
     @REM %~2: Delimiter.
@@ -325,6 +331,59 @@ GOTO :EOF
         ECHO ===================================================================
 
     ENDLOCAL
+    GOTO :EOF
+
+
+:range
+    @REM Create an array containing a range of elements from the first given
+    @REM to the last. The last is included.
+    @REM
+    @REM %~1: Array name.
+    @REM %~2: Delimiter.
+    @REM %~3 (Optional): Range start. Defaults to 0.
+    @REM %~4 (Optional): Range stop. Defaults to the start given value.
+    @REM %~5 (Optional): Range step. Defaults to 1.
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\Functions.bat :range array_name delimiter start stop step
+
+    SETLOCAL
+
+        CALL src\Functions.bat :create_string delimiter "%~2"
+        SET start=%~3
+        SET stop=%~4
+        SET step=%~5
+
+        IF "!stop!" EQU "" (
+
+            SET /A stop=!start!
+            SET /A start=0
+
+        )
+
+        IF "!step!" EQU "" (
+
+            SET /A step=1
+
+        )
+
+        SET content=
+        FOR /L %%i IN ( !start!, !step!, !stop! ) DO (
+
+            SET content=!content!%%i
+
+            IF NOT %%i EQU !stop! (
+
+                SET content=!content!!delimiter!
+
+            )
+
+        )
+
+    ( ENDLOCAL & REM
+
+        CALL src\Functions.bat :create_array %~1 "%delimiter%" "%content%"
+    )
     GOTO :EOF
 
 
