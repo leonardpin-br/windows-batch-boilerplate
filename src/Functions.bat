@@ -135,7 +135,6 @@ GOTO :EOF
     SETLOCAL
 
         CLS
-        ECHO.
 
     ENDLOCAL
     GOTO :EOF
@@ -269,7 +268,7 @@ GOTO :EOF
         )
 
         @REM Creates a temporary file and writes the string without quotations inside it.
-        ECHO %~2> %TEMP%\tempfile.txt
+        ECHO "%~2"> %TEMP%\tempfile.txt
 
         @REM %%j will be C:\Users\leonardo\AppData\Local\Temp\tempfile.txt.
         FOR %%j IN ( %TEMP%\tempfile.txt ) DO (
@@ -307,6 +306,46 @@ GOTO :EOF
         ECHO ===================================================================
 
     ENDLOCAL
+    GOTO :EOF
+
+
+:min
+    @REM The :min function returns the lowest value in an array.
+    @REM
+    @REM If 0 is part of the array, it must be scaped like (534,-2,^0).
+    @REM
+    @REM %~1: Array name.
+    @REM %~2: Return name.
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\Functions.bat :min array_name return_name
+
+    SETLOCAL
+
+        SET /A for_upper_limit=!%~1.length!-1
+
+        FOR /L %%i IN ( 0, 1, !for_upper_limit! ) DO (
+
+            @REM If it is the first item in the array, sets the minimum as the first.
+            IF %%i EQU 0 (
+
+                SET /A minimum=!%~1[%%i]!
+
+            ) ELSE (
+
+                IF !%~1[%%i]! LSS !minimum! (
+
+                    SET /A minimum=!%~1[%%i]!
+
+                )
+
+            )
+
+        )
+
+    ( ENDLOCAL & REM
+        IF "%~2" NEQ "" SET %~2=%minimum%
+    )
     GOTO :EOF
 
 

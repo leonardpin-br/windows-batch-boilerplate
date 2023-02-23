@@ -63,14 +63,27 @@ GOTO :main
         @REM ECHO !variable_name!
         @REM ECHO !variable_name.length!
 
-        CALL src\Functions.bat :create_array grocery_list "," "Apples, Bananas, Meat, Soap, Tomato"
-        ECHO Array content: !grocery_list!
-        ECHO Array length: !grocery_list.length!
-        ECHO Index 0 from array: !grocery_list[0]!
-        ECHO Index 1 from array: !grocery_list[1]!
-        ECHO Index 2 from array: !grocery_list[2]!
-        ECHO Index 3 from array: !grocery_list[3]!
-        ECHO Index 4 from array: !grocery_list[4]!
+        @REM CALL src\Functions.bat :create_array grocery_list "," "Apples, Bananas, Meat, Soap, Tomato"
+        @REM ECHO Array content: !grocery_list!
+        @REM ECHO Array length: !grocery_list.length!
+        @REM ECHO Index 0 from array: !grocery_list[0]!
+        @REM ECHO Index 1 from array: !grocery_list[1]!
+        @REM ECHO Index 2 from array: !grocery_list[2]!
+        @REM ECHO Index 3 from array: !grocery_list[3]!
+        @REM ECHO Index 4 from array: !grocery_list[4]!
+
+        CALL src\Functions.bat :create_array list_of_numbers "," "45,534,2,65,-2,-34,1,^0"
+        ECHO !list_of_numbers!
+        ECHO !list_of_numbers[0]!
+        ECHO !list_of_numbers[1]!
+        ECHO !list_of_numbers[2]!
+        ECHO !list_of_numbers[3]!
+        ECHO !list_of_numbers[4]!
+        ECHO !list_of_numbers[5]!
+        ECHO !list_of_numbers[6]!
+        ECHO !list_of_numbers[7]!
+        CALL src\Functions.bat :min list_of_numbers minimum_value
+        ECHO Minimum value: !minimum_value!
 
         ECHO.
         ECHO.
