@@ -112,9 +112,14 @@ GOTO :main
         @REM ECHO.
         @REM CALL src\ColorMessage.bat 3a "TURTLE COLORS"
 
-        CALL src\Functions.bat :print_message "ERROR" "This is an error."
-        CALL src\Functions.bat :print_message "WARNING" "This is a warning."
-        CALL src\Functions.bat :print_message "SUCCESS" "This is a success."
+        @REM CALL src\Functions.bat :print_message "ERROR" "This is an error."
+        @REM CALL src\Functions.bat :print_message "WARNING" "This is a warning."
+        @REM CALL src\Functions.bat :print_message "SUCCESS" "This is a success."
+
+        CALL src\Functions.bat :create_string sentence "A lot of stuff"
+        CALL src\String.bat :center sentence 40 fill
+        ECHO !fill!
+        CALL src\ColorMessage.bat 3a "!fill!"
 
         ECHO.
         ECHO.

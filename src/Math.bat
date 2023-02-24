@@ -19,7 +19,7 @@
 
 
 @REM Checks if this file was called with the function name, and the name exists.
-@REM If the name of the function was given (like CALL Functions.bat :add_one):
+@REM If the name of the function was given (like CALL Math.bat :max):
 IF "%~1" NEQ "" (
 
     2>NUL >NUL FINDSTR /rc:"^ *%~1\>" "%~f0" && (
