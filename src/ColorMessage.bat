@@ -1,8 +1,12 @@
-@REM Main file of this example app. This is the file to be executed.
+@REM Allows the use of colors in the Command Prompt.
+@REM
+@REM This file is a modification of a script created by dbenham. It was modified
+@REM further by John Hammond and them by me.
 @REM
 @REM HOW TO USE THIS FILE:
-@REM    If this file is called from the CMD terminal, type the following:
-@REM    Main.bat argument_name
+@REM    From a file (like Main.bat) use it as follows:
+@REM    CALL src\ColorMessage.bat C "Red Text"
+@REM    CALL src\ColorMessage.bat 3A "TURTLE COLORS"
 @REM
 @REM REFERENCES:
 @REM    Batch Tutorials

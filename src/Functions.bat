@@ -320,6 +320,10 @@ GOTO :EOF
     @REM
     @REM How to use this function:
     @REM    CALL src\Functions.bat :print_message "tipe of message" "Message string"
+    @REM
+    @REM    CALL src\Functions.bat :print_message "ERROR" "This is an error."
+    @REM    CALL src\Functions.bat :print_message "WARNING" "This is a warning."
+    @REM    CALL src\Functions.bat :print_message "SUCCESS" "This is a success."
 
     SETLOCAL
 
