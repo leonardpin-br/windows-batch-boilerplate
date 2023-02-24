@@ -59,7 +59,7 @@ GOTO :main
         @REM ECHO The value of x after calling Functions.bat :add_one is !x!.
         @REM ECHO The value of y after calling Functions.bat :add_one is !y!.
 
-        @REM CALL src\Functions.bat :create_string variable_name "One"
+        @REM CALL src\String.bat :create_string variable_name "One"
         @REM ECHO !variable_name!
         @REM ECHO !variable_name.length!
 
@@ -116,25 +116,25 @@ GOTO :main
         @REM CALL src\Functions.bat :print_message "WARNING" "This is a warning."
         @REM CALL src\Functions.bat :print_message "SUCCESS" "This is a success."
 
-        @REM CALL src\Functions.bat :create_string sentence "A lot of stuff"
+        @REM CALL src\String.bat :create_string sentence "A lot of stuff"
         @REM CALL src\String.bat :center sentence 40 fill
         @REM ECHO !fill!
         @REM CALL src\ColorMessage.bat 3a "!fill!"
 
-        @REM CALL src\Functions.bat :create_string variable "what are you talking about"
+        @REM CALL src\String.bat :create_string variable "what are you talking about"
         @REM CALL src\String.bat :capitalize "!variable!" return_name
         @REM ECHO !return_name!
 
-        @REM CALL src\Functions.bat :create_string variable "This is a joke, isn't it? I think it is."
+        @REM CALL src\String.bat :create_string variable "This is a joke, isn't it? I think it is."
         @REM CALL src\String.bat :count "!variable!" "i" total
         @REM ECHO !total!
 
-        @REM CALL src\Functions.bat :create_string variable "This is a joke."
+        @REM CALL src\String.bat :create_string variable "This is a joke."
         @REM CALL src\String.bat :starts_with "!variable!" "This i" does_it
         @REM ECHO !does_it!
 
-        CALL src\Functions.bat :create_string variable "This is a joke."
-        CALL src\String.bat :ends_with "!variable!" "ke." does_it
+        CALL src\String.bat :create_string variable "This is a joke."
+        CALL src\String.bat :ends_with "!variable!" "joke." does_it
         ECHO !does_it!
 
         ECHO.

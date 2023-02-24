@@ -51,7 +51,7 @@ GOTO :EOF
     @REM How to use this function:
     @REM    CALL src\String.bat :capitalize "!string!" return_name
     @REM
-    @REM    CALL src\Functions.bat :create_string variable "what are you talking about"
+    @REM    CALL src\String.bat :create_string variable "what are you talking about"
     @REM    CALL src\String.bat :capitalize "!variable!" return_name
     @REM    ECHO !return_name!
 
@@ -60,7 +60,7 @@ GOTO :EOF
         CALL src\Functions.bat :create_array uppers "," "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z"
         CALL src\Functions.bat :create_array lowers "," "a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z"
 
-        CALL src\Functions.bat :create_string string "%~1"
+        CALL src\String.bat :create_string string "%~1"
         SET second_parameter=%~2
 
         SET first=!string:~0,1!
@@ -100,7 +100,7 @@ GOTO :EOF
     @REM How to use this function:
     @REM    CALL src\String.bat :center existing_string width return_name
     @REM
-    @REM    CALL src\Functions.bat :create_string sentence "A lot of stuff"
+    @REM    CALL src\String.bat :create_string sentence "A lot of stuff"
     @REM    CALL src\String.bat :center sentence 40 fill
     @REM    ECHO !fill!
     @REM    CALL src\ColorMessage.bat 3a "!fill!"
@@ -183,7 +183,7 @@ GOTO :EOF
     @REM How to use this function:
     @REM    CALL src\String.bat :count "!haystack!" "!needle!" return_name
     @REM
-    @REM    CALL src\Functions.bat :create_string variable "This is a joke!"
+    @REM    CALL src\String.bat :create_string variable "This is a joke!"
     @REM    CALL src\String.bat :count "!variable!" "is" total
     @REM    ECHO !total!
 
@@ -191,8 +191,8 @@ GOTO :EOF
 
     ( ENDLOCAL & REM
 
-        CALL src\Functions.bat :create_string haystack "%~1"
-        CALL src\Functions.bat :create_string needle "%~2"
+        CALL src\String.bat :create_string haystack "%~1"
+        CALL src\String.bat :create_string needle "%~2"
 
         @REM Whe should not count the quotes.
         SET /A haystack_limit=!haystack.length!-1
@@ -224,6 +224,62 @@ GOTO :EOF
     GOTO :EOF
 
 
+:create_string
+    @REM Creates a string.
+    @REM
+    @REM %~1: Variable name.
+    @REM %~2: String inside quotes.
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\String.bat :create_string variable_name "Everything INSIDE the quotation marks."
+    @REM    ECHO !variable_name!
+    @REM    ECHO !variable_name.length!
+
+    SETLOCAL
+
+        @REM Local variable to hold the string length.
+        SET /A string.length=0
+
+        @REM Removes from the count the extra bytes.
+        SET /A takeaway=4
+
+        @REM The string inside quotation marks.
+        SET string=%~2
+
+        @REM useback will remove the outside quotation marks, leaving any internal ones.
+        FOR /F "useback tokens=*" %%i IN ('!string!') DO (
+
+            @REM The variable is set with the string without quotes.
+            SET string=%%~i
+
+        )
+
+        @REM Creates a temporary file and writes the string without quotations inside it.
+        ECHO "%~2"> %TEMP%\tempfile.txt
+
+        @REM %%j will be C:\Users\leonardo\AppData\Local\Temp\tempfile.txt.
+        FOR %%j IN ( %TEMP%\tempfile.txt ) DO (
+
+            IF !string! EQU %%j (
+                SET /A takeaway=2
+            )
+
+            @REM %%~z means the file size (like 41 bytes).
+            @REM %%~zj means the file size of C:\Users\leonardo\AppData\Local\Temp\tempfile.txt.
+            SET /A string.length=%%~zj - !takeaway!
+
+        )
+
+        @REM Deletes the temporary file.
+        DEL %TEMP%\tempfile.txt
+
+    ( ENDLOCAL & REM
+        IF "%~1" NEQ "" SET %~1=%string%
+        IF "%~1.length" NEQ "" SET /A %~1.length=%string.length%
+    )
+    GOTO :EOF
+
+
 :ends_with
     @REM Returns (the string) True if the string ends with the substring.
     @REM Otherwise, returns (the string) False.
@@ -235,14 +291,14 @@ GOTO :EOF
     @REM How to use this function:
     @REM    CALL src\String.bat :ends_with "!string!" "!start!" return_name
     @REM
-    @REM    CALL src\Functions.bat :create_string variable "This is a joke."
+    @REM    CALL src\String.bat :create_string variable "This is a joke."
     @REM    CALL src\String.bat :ends_with "!variable!" "ke." does_it
     @REM    ECHO !does_it!
 
     SETLOCAL
 
-        CALL src\Functions.bat :create_string content "%~1"
-        CALL src\Functions.bat :create_string ends_with "%~2"
+        CALL src\String.bat :create_string content "%~1"
+        CALL src\String.bat :create_string ends_with "%~2"
 
         SET result=True
 
@@ -276,14 +332,14 @@ GOTO :EOF
     @REM How to use this function:
     @REM    CALL src\String.bat :starts_with "!string!" "!start!" return_name
     @REM
-    @REM    CALL src\Functions.bat :create_string variable "This is a joke."
+    @REM    CALL src\String.bat :create_string variable "This is a joke."
     @REM    CALL src\String.bat :starts_with "!variable!" "this" does_it
     @REM    ECHO !does_it!
 
     SETLOCAL
 
-        CALL src\Functions.bat :create_string content "%~1"
-        CALL src\Functions.bat :create_string starts_with "%~2"
+        CALL src\String.bat :create_string content "%~1"
+        CALL src\String.bat :create_string starts_with "%~2"
 
         SET /A limit=!starts_with.length!-1
         SET result=True

@@ -178,8 +178,8 @@ GOTO :EOF
         @REM Sets the indexes of each item in the array.
         @REM -------------------------------------------------------------------
 
-        CALL src\Functions.bat :create_string string_delimiter "%~2"
-        CALL src\Functions.bat :create_string string_content "%~3"
+        CALL src\String.bat :create_string string_delimiter "%~2"
+        CALL src\String.bat :create_string string_content "%~3"
 
         @REM Index position, in the string given to create the array, immediately after the delimiter.
         SET /A string_offset=0
@@ -239,62 +239,6 @@ GOTO :EOF
         SET string_delimiter=
         SET /A array_index=0
 
-    )
-    GOTO :EOF
-
-
-:create_string
-    @REM Creates a string.
-    @REM
-    @REM %~1: Variable name.
-    @REM %~2: String inside quotes.
-    @REM
-    @REM How to use this function:
-    @REM    CALL src\Functions.bat :create_string variable_name "Everything INSIDE the quotation marks."
-    @REM    ECHO !variable_name!
-    @REM    ECHO !variable_name.length!
-
-    SETLOCAL
-
-        @REM Local variable to hold the string length.
-        SET /A string.length=0
-
-        @REM Removes from the count the extra bytes.
-        SET /A takeaway=4
-
-        @REM The string inside quotation marks.
-        SET string=%~2
-
-        @REM useback will remove the outside quotation marks, leaving any internal ones.
-        FOR /F "useback tokens=*" %%i IN ('!string!') DO (
-
-            @REM The variable is set with the string without quotes.
-            SET string=%%~i
-
-        )
-
-        @REM Creates a temporary file and writes the string without quotations inside it.
-        ECHO "%~2"> %TEMP%\tempfile.txt
-
-        @REM %%j will be C:\Users\leonardo\AppData\Local\Temp\tempfile.txt.
-        FOR %%j IN ( %TEMP%\tempfile.txt ) DO (
-
-            IF !string! EQU %%j (
-                SET /A takeaway=2
-            )
-
-            @REM %%~z means the file size (like 41 bytes).
-            @REM %%~zj means the file size of C:\Users\leonardo\AppData\Local\Temp\tempfile.txt.
-            SET /A string.length=%%~zj - !takeaway!
-
-        )
-
-        @REM Deletes the temporary file.
-        DEL %TEMP%\tempfile.txt
-
-    ( ENDLOCAL & REM
-        IF "%~1" NEQ "" SET %~1=%string%
-        IF "%~1.length" NEQ "" SET /A %~1.length=%string.length%
     )
     GOTO :EOF
 
@@ -369,7 +313,7 @@ GOTO :EOF
 
     SETLOCAL
 
-        CALL src\Functions.bat :create_string delimiter "%~2"
+        CALL src\String.bat :create_string delimiter "%~2"
         SET start=%~3
         SET stop=%~4
         SET step=%~5
@@ -426,7 +370,7 @@ GOTO :EOF
 
     ( ENDLOCAL & REM
 
-        CALL src\Functions.bat :create_string %~1[%~2] "!%~3!"
+        CALL src\String.bat :create_string %~1[%~2] "!%~3!"
 
     )
     GOTO :EOF
@@ -444,7 +388,7 @@ GOTO :EOF
     SETLOCAL
 
         SET array_name=%~1
-        CALL src\Functions.bat :create_string delimiter "%~2"
+        CALL src\String.bat :create_string delimiter "%~2"
 
         SET /A for_upper_limit=!%~1.length!-1
 
@@ -455,8 +399,8 @@ GOTO :EOF
                 IF !%~1[%%i]! GTR !%~1[%%j]! (
 
                     SET /A temporary=!%~1[%%i]!
-                    CALL src\Functions.bat :create_string !array_name![%%i] "!%~1[%%j]!"
-                    CALL src\Functions.bat :create_string !array_name![%%j] "!temporary!"
+                    CALL src\String.bat :create_string !array_name![%%i] "!%~1[%%j]!"
+                    CALL src\String.bat :create_string !array_name![%%j] "!temporary!"
 
                 )
 
