@@ -2,7 +2,7 @@
 @REM
 @REM HOW TO USE THIS FILE:
 @REM    From the Main.bat file, inside the :main function, use as follows:
-@REM    CALL GlobalVariables.bat
+@REM    CALL src\GlobalVariables.bat
 @REM
 @REM REFERENCES:
 @REM    Batch file include external file for variables
