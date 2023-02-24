@@ -121,9 +121,13 @@ GOTO :main
         @REM ECHO !fill!
         @REM CALL src\ColorMessage.bat 3a "!fill!"
 
-        CALL src\Functions.bat :create_string variable "what are you talking about"
-        CALL src\String.bat :capitalize "!variable!" return_name
-        ECHO !return_name!
+        @REM CALL src\Functions.bat :create_string variable "what are you talking about"
+        @REM CALL src\String.bat :capitalize "!variable!" return_name
+        @REM ECHO !return_name!
+
+        CALL src\Functions.bat :create_string variable "This is a joke, isn't it? I think it is."
+        CALL src\String.bat :count "!variable!" "i" total
+        ECHO !total!
 
         ECHO.
         ECHO.

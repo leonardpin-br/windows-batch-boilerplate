@@ -137,3 +137,88 @@ GOTO :EOF
         IF "%~3" NEQ "" SET %~3=%content%
     )
     GOTO :EOF
+
+
+:count_check_character
+    @REM Auxiliary function used by :count to avoid double expansion (one
+    @REM inside another).
+    @REM
+    @REM To achieve that, it is necessary to work outside the local scope.
+    @REM
+    @REM %~1: The offset.
+    @REM %~2: The iterator from the loop.
+    @REM %~3: Return name.
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\String.bat :count_check_character !offset! %%j %~3
+
+    SETLOCAL
+
+    ( ENDLOCAL & REM
+
+        IF "!haystack:~%~1,1!" EQU "!needle:~%~2,1!" (
+
+            IF %~2 EQU !needle_limit! (
+
+                SET /A %~3=!%~3!+1
+
+            )
+
+        )
+
+    )
+    GOTO :EOF
+
+
+:count
+    @REM Return the number of non-overlapping occurrences of a substring.
+    @REM
+    @REM To avoid double expansion (one inside another), it is necessary to work
+    @REM outside the local scope and use another auxiliary function.
+    @REM
+    @REM %~1: The string (haystack).
+    @REM %~2: The substring we are looking for (needle).
+    @REM %~3: Return name.
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\String.bat :count "!haystack!" "!needle!" return_name
+    @REM
+    @REM    CALL src\Functions.bat :create_string variable "This is a joke!"
+    @REM    CALL src\String.bat :count "!variable!" "is" total
+    @REM    ECHO !total!
+
+    SETLOCAL
+
+    ( ENDLOCAL & REM
+
+        CALL src\Functions.bat :create_string haystack "%~1"
+        CALL src\Functions.bat :create_string needle "%~2"
+
+        @REM Whe should not count the quotes.
+        SET /A haystack_limit=!haystack.length!-1
+        SET /A needle_limit=!needle.length!-1
+
+        FOR /L %%i IN ( 0, 1, !haystack_limit! ) DO (
+
+            SET character=!haystack:~%%i,1!
+
+            IF "!character!" EQU "!needle:~0,1!" (
+
+                FOR /L %%j IN ( 0, 1, !needle_limit! ) DO (
+
+                    SET /A offset=%%i+%%j
+
+                    CALL src\String.bat :count_check_character !offset! %%j %~3
+
+                )
+
+            )
+
+        )
+
+        IF "!%~3!" EQU "" (
+            SET /A %~3=0
+        )
+
+    )
+    GOTO :EOF

@@ -260,7 +260,7 @@ GOTO :EOF
         SET /A string.length=0
 
         @REM Removes from the count the extra bytes.
-        SET /A takeaway=2
+        SET /A takeaway=4
 
         @REM The string inside quotation marks.
         SET string=%~2
@@ -280,7 +280,7 @@ GOTO :EOF
         FOR %%j IN ( %TEMP%\tempfile.txt ) DO (
 
             IF !string! EQU %%j (
-                SET /A takeaway=0
+                SET /A takeaway=2
             )
 
             @REM %%~z means the file size (like 41 bytes).
