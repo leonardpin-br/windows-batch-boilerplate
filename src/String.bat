@@ -41,10 +41,57 @@ IF "%~1" NEQ "" (
 GOTO :EOF
 
 
+:capitalize
+    @REM Return a copy of the string with its first character capitalized and
+    @REM the rest lowercased.
+    @REM
+    @REM %~1: Existing string or the expansion of a variable.
+    @REM %~2: Return name.
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\String.bat :capitalize "!string!" return_name
+    @REM
+    @REM    CALL src\Functions.bat :create_string variable "what are you talking about"
+    @REM    CALL src\String.bat :capitalize "!variable!" return_name
+    @REM    ECHO !return_name!
+
+    SETLOCAL
+
+        CALL src\Functions.bat :create_array uppers "," "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z"
+        CALL src\Functions.bat :create_array lowers "," "a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z"
+
+        CALL src\Functions.bat :create_string string "%~1"
+        SET second_parameter=%~2
+
+        SET first=!string:~0,1!
+
+        SET /A for_upper_limit=!uppers.length!-1
+
+        FOR /L %%i IN ( 0, 1, !for_upper_limit! ) DO (
+
+            IF !lowers[%%i]! EQU !first! (
+
+                SET second_parameter=!uppers[%%i]!
+                GOTO :capitalize_end
+            )
+
+        )
+
+        SET second_parameter=!first!
+
+        :capitalize_end
+            SET second_parameter=!second_parameter!!string:~1!
+
+    ( ENDLOCAL & REM
+        IF "%~2" NEQ "" SET %~2=%second_parameter%
+    )
+    GOTO :EOF
+
+
 :center
-    @REM Return centered in a string of length width. Padding is done using the
-    @REM specified fillchar (default is an ASCII space). The original string is
-    @REM returned if width is less than or equal to len(s).
+    @REM The given string is returned centered in the given width. Padding is
+    @REM done using spaces. The original string is returned if width is less
+    @REM than or equal to len(s).
     @REM
     @REM %~1: Existing string name.
     @REM %~2: Width.
@@ -74,16 +121,17 @@ GOTO :EOF
 
         FOR /L %%i IN ( 0, 1, %~2 ) DO (
 
+            @REM Adds a space to the variable.
             SET "content=!content! "
 
             IF %%i EQU !middle! (
                 SET content=!content!!%~1!!content!
-                GOTO :the_end
+                GOTO :center_end
             )
 
         )
 
-        :the_end
+        :center_end
 
     ( ENDLOCAL & REM
         IF "%~3" NEQ "" SET %~3=%content%

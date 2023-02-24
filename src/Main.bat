@@ -116,10 +116,14 @@ GOTO :main
         @REM CALL src\Functions.bat :print_message "WARNING" "This is a warning."
         @REM CALL src\Functions.bat :print_message "SUCCESS" "This is a success."
 
-        CALL src\Functions.bat :create_string sentence "A lot of stuff"
-        CALL src\String.bat :center sentence 40 fill
-        ECHO !fill!
-        CALL src\ColorMessage.bat 3a "!fill!"
+        @REM CALL src\Functions.bat :create_string sentence "A lot of stuff"
+        @REM CALL src\String.bat :center sentence 40 fill
+        @REM ECHO !fill!
+        @REM CALL src\ColorMessage.bat 3a "!fill!"
+
+        CALL src\Functions.bat :create_string variable "what are you talking about"
+        CALL src\String.bat :capitalize "!variable!" return_name
+        ECHO !return_name!
 
         ECHO.
         ECHO.

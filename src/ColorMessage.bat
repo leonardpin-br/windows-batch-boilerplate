@@ -1,7 +1,7 @@
 @REM Allows the use of colors in the Command Prompt.
 @REM
-@REM This file is a modification of a script created by dbenham. It was modified
-@REM further by John Hammond and them by me.
+@REM This file is a modification of a script created by jeb (see reference). It
+@REM was modified further by dbenham, then by John Hammond and then by me.
 @REM
 @REM HOW TO USE THIS FILE:
 @REM    From a file (like Main.bat) use it as follows:
