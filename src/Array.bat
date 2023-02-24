@@ -19,7 +19,7 @@
 
 
 @REM Checks if this file was called with the function name, and the name exists.
-@REM If the name of the function was given (like CALL Functions.bat :add_one):
+@REM If the name of the function was given (like CALL Array.bat :create_array):
 IF "%~1" NEQ "" (
 
     2>NUL >NUL FINDSTR /rc:"^ *%~1\>" "%~f0" && (
@@ -34,7 +34,7 @@ IF "%~1" NEQ "" (
 
     )
 
-@REM If the function name was not given (like CALL Functions.bat):
+@REM If the function name was not given (like CALL Array.bat):
 ) ELSE >&2 CALL src\Functions.bat :print_message "ERROR" "Missing the function name when calling %~nx0."
 
 
