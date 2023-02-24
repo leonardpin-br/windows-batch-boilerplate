@@ -222,3 +222,86 @@ GOTO :EOF
 
     )
     GOTO :EOF
+
+
+:ends_with
+    @REM Returns (the string) True if the string ends with the substring.
+    @REM Otherwise, returns (the string) False.
+    @REM
+    @REM %~1: The string.
+    @REM %~2: The substring we are looking for.
+    @REM %~3: Return name.
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\String.bat :ends_with "!string!" "!start!" return_name
+    @REM
+    @REM    CALL src\Functions.bat :create_string variable "This is a joke."
+    @REM    CALL src\String.bat :ends_with "!variable!" "ke." does_it
+    @REM    ECHO !does_it!
+
+    SETLOCAL
+
+        CALL src\Functions.bat :create_string content "%~1"
+        CALL src\Functions.bat :create_string ends_with "%~2"
+
+        SET result=True
+
+        FOR /L %%i IN ( 1, 1, !ends_with.length! ) DO (
+
+            IF "!content:~-%%i,1!" NEQ "!ends_with:~-%%i,1!" (
+
+                SET result=False
+                GOTO :ends_with_end
+
+            )
+
+        )
+
+        :ends_with_end
+
+    ( ENDLOCAL & REM
+        IF "%~3" NEQ "" SET %~3=%result%
+    )
+    GOTO :EOF
+
+
+:starts_with
+    @REM Returns (the string) True if the string starts with the substring.
+    @REM Otherwise, returns (the string) False.
+    @REM
+    @REM %~1: The string.
+    @REM %~2: The substring we are looking for.
+    @REM %~3: Return name.
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\String.bat :starts_with "!string!" "!start!" return_name
+    @REM
+    @REM    CALL src\Functions.bat :create_string variable "This is a joke."
+    @REM    CALL src\String.bat :starts_with "!variable!" "this" does_it
+    @REM    ECHO !does_it!
+
+    SETLOCAL
+
+        CALL src\Functions.bat :create_string content "%~1"
+        CALL src\Functions.bat :create_string starts_with "%~2"
+
+        SET /A limit=!starts_with.length!-1
+        SET result=True
+
+        FOR /L %%i IN ( 0, 1, !limit! ) DO (
+
+            IF "!content:~%%i,1!" NEQ "!starts_with:~%%i,1!" (
+
+                SET result=False
+                GOTO :starts_with_end
+
+            )
+
+        )
+
+        :starts_with_end
+
+    ( ENDLOCAL & REM
+        IF "%~3" NEQ "" SET %~3=%result%
+    )
+    GOTO :EOF

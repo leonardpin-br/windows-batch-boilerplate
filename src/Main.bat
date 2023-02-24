@@ -125,9 +125,17 @@ GOTO :main
         @REM CALL src\String.bat :capitalize "!variable!" return_name
         @REM ECHO !return_name!
 
-        CALL src\Functions.bat :create_string variable "This is a joke, isn't it? I think it is."
-        CALL src\String.bat :count "!variable!" "i" total
-        ECHO !total!
+        @REM CALL src\Functions.bat :create_string variable "This is a joke, isn't it? I think it is."
+        @REM CALL src\String.bat :count "!variable!" "i" total
+        @REM ECHO !total!
+
+        @REM CALL src\Functions.bat :create_string variable "This is a joke."
+        @REM CALL src\String.bat :starts_with "!variable!" "This i" does_it
+        @REM ECHO !does_it!
+
+        CALL src\Functions.bat :create_string variable "This is a joke."
+        CALL src\String.bat :ends_with "!variable!" "ke." does_it
+        ECHO !does_it!
 
         ECHO.
         ECHO.
