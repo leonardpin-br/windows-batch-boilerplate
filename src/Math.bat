@@ -30,12 +30,12 @@ IF "%~1" NEQ "" (
     ) || (
 
         @REM Only runs this command if the first one fails.
-        >&2 CALL src\Functions.bat :print_message "ERROR: Function %~1 not found inside %~nx0."
+        >&2 CALL src\Functions.bat :print_message "ERROR" "Function %~1 not found inside %~nx0."
 
     )
 
 @REM If the function name was not given (like CALL Functions.bat):
-) ELSE >&2 CALL src\Functions.bat :print_message "ERROR: Missing the function name when calling %~nx0."
+) ELSE >&2 CALL src\Functions.bat :print_message "ERROR" "Missing the function name when calling %~nx0."
 
 
 GOTO :EOF

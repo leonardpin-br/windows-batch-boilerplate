@@ -102,11 +102,19 @@ GOTO :main
         @REM CALL src\Math.bat :sum numbers total
         @REM ECHO !total!
 
-        CALL src\Functions.bat :create_array numbers "," "23,4,635,43,74,2,765,3,7,45,876"
-        ECHO !numbers!
-        CALL src\Functions.bat :sort numbers ","
-        ECHO !numbers!
-        ECHO !numbers[0]!
+        @REM CALL src\Functions.bat :create_array numbers "," "23,4,635,43,74,2,765,3,7,45,876"
+        @REM ECHO !numbers!
+        @REM CALL src\Functions.bat :sort numbers ","
+        @REM ECHO !numbers!
+        @REM ECHO !numbers[0]!
+
+        @REM CALL src\ColorMessage.bat c "Red Text"
+        @REM ECHO.
+        @REM CALL src\ColorMessage.bat 3a "TURTLE COLORS"
+
+        CALL src\Functions.bat :print_message "ERROR" "This is an error."
+        CALL src\Functions.bat :print_message "WARNING" "This is a warning."
+        CALL src\Functions.bat :print_message "SUCCESS" "This is a success."
 
         ECHO.
         ECHO.

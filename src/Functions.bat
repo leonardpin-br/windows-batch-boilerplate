@@ -30,12 +30,12 @@ IF "%~1" NEQ "" (
     ) || (
 
         @REM Only runs this command if the first one fails.
-        >&2 CALL src\Functions.bat :print_message "ERROR: Function %~1 not found inside %~nx0."
+        >&2 CALL src\Functions.bat :print_message "ERROR" "Function %~1 not found inside %~nx0."
 
     )
 
 @REM If the function name was not given (like CALL Functions.bat):
-) ELSE >&2 CALL src\Functions.bat :print_message "ERROR: Missing the function name when calling %~nx0."
+) ELSE >&2 CALL src\Functions.bat :print_message "ERROR" "Missing the function name when calling %~nx0."
 
 
 GOTO :EOF
@@ -319,14 +319,30 @@ GOTO :EOF
     @REM Prints a message in CMD that is easy to read.
     @REM
     @REM How to use this function:
-    @REM    CALL src\Functions.bat :print_message "Message string"
+    @REM    CALL src\Functions.bat :print_message "tipe of message" "Message string"
 
     SETLOCAL
 
         ECHO.
         ECHO ===================================================================
         ECHO.
-        ECHO %~1
+
+        IF "%~1" EQU "ERROR" (
+            CALL src\ColorMessage.bat 4 %~1:
+            ECHO.
+        )
+
+        IF "%~1" EQU "WARNING" (
+            CALL src\ColorMessage.bat 6 %~1:
+            ECHO.
+        )
+
+        IF "%~1" EQU "SUCCESS" (
+            CALL src\ColorMessage.bat 2 %~1:
+            ECHO.
+        )
+
+        ECHO %~2
         ECHO.
         ECHO ===================================================================
 
