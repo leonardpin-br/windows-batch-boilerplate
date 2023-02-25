@@ -129,9 +129,11 @@ GOTO :main
         @REM ECHO !fill!
         @REM CALL src\ColorMessage.bat 3a "!fill!"
 
-        @REM CALL src\String.bat :create_string variable "what are you talking about"
-        @REM CALL src\String.bat :capitalize "!variable!" return_name
-        @REM ECHO !return_name!
+        CALL src\String.bat :create_string variable "what are you talking about"
+        ECHO Original string above and capitalized below:
+        ECHO !variable!
+        CALL src\String.bat :capitalize "!variable!" return_name
+        ECHO !return_name!
 
         @REM CALL src\String.bat :create_string variable "This is a joke, isn't it? I think it is."
         @REM ECHO Given string: !variable!
@@ -160,11 +162,11 @@ GOTO :main
         @REM CALL src\String.bat :find "!variable!" "faS" position
         @REM ECHO In which position is the first "faS" substring in the string: !position!
 
-        CALL src\String.bat :create_string string "this"
-        ECHO Given string: !string!
-        CALL src\String.bat :is_alpha "!string!" return_name
-        ECHO Is the given string all alphabetical?
-        ECHO !return_name!
+        @REM CALL src\String.bat :create_string string "this"
+        @REM ECHO Given string: !string!
+        @REM CALL src\String.bat :is_alpha "!string!" return_name
+        @REM ECHO Is the given string all alphabetical?
+        @REM ECHO !return_name!
 
         ECHO.
         ECHO.

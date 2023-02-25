@@ -11,7 +11,14 @@
 @REM    From the Main.bat file, inside the :main function, use it as follows:
 @REM    CALL src\String.bat :function_name argument
 @REM
+@REM WARNING:
+@REM    "Imported" files (like this one) should not have local global variables
+@REM    because they are not accessible. Global variables should be placed
+@REM    inside Main.bat or, better yet, inside the GlobalVariables.bat file.
+@REM
 @REM REFERENCES:
+@REM    Batch Tutorials
+@REM    https://www.youtube.com/playlist?list=PL69BE3BF7D0BB69C4
 @REM    How to package all my functions in a batch file as a seperate file?
 @REM    https://stackoverflow.com/a/18743342
 @REM    Udemy - Windows Command Line - Hands-On (CMD, Batch, MS-DOS), Section 2: Redirectors & Applications, 4. Redirectors.
@@ -59,21 +66,18 @@ GOTO :EOF
 
     SETLOCAL
 
-        CALL src\Functions.bat :create_array uppers "," "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z"
-        CALL src\Functions.bat :create_array lowers "," "a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z"
-
         CALL src\String.bat :create_string string "%~1"
         SET second_parameter=%~2
 
         SET first=!string:~0,1!
 
-        SET /A for_upper_limit=!uppers.length!-1
+        SET /A for_upper_limit=!upper_cased_letters.length!-1
 
         FOR /L %%i IN ( 0, 1, !for_upper_limit! ) DO (
 
-            IF !lowers[%%i]! EQU !first! (
+            IF !lower_cased_letters[%%i]! EQU !first! (
 
-                SET second_parameter=!uppers[%%i]!
+                SET second_parameter=!upper_cased_letters[%%i]!
                 GOTO :capitalize_end
             )
 
@@ -434,7 +438,7 @@ GOTO :EOF
     @REM Otherwise, returns (the string) False.
     @REM
     @REM This function has limitations:
-    @REM    ! % | < > & " SPACE could not be excluded as non alphabetical.
+    @REM    ! % | < > & " SPACE could not be excluded as non-alphabetical.
     @REM    Spaces are ignored. So, a string containing spaces is considered alphabetical.
     @REM
     @REM %~1: The string.

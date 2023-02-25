@@ -11,6 +11,11 @@
 @REM    From the Main.bat file, inside the :main function, use it as follows:
 @REM    CALL src\Array.bat :function_name argument
 @REM
+@REM WARNING:
+@REM    "Imported" files (like this one) should not have local global variables
+@REM    because they are not accessible. Global variables should be placed
+@REM    inside Main.bat or, better yet, inside the GlobalVariables.bat file.
+@REM
 @REM REFERENCES:
 @REM    How to package all my functions in a batch file as a seperate file?
 @REM    https://stackoverflow.com/a/18743342
