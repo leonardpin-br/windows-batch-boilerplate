@@ -151,6 +151,15 @@ GOTO :main
         @REM ECHO Ends with "joke."?
         @REM ECHO !does_it!
 
+        CALL src\String.bat :create_string variable "this is it, isn't it?"
+        ECHO Given string: !variable!
+        CALL src\String.bat :find "!variable!" "i" position
+        ECHO In which position is the first "i" substring in the string: !position!
+        CALL src\String.bat :find "!variable!" "i" position 3
+        ECHO And starting from the position 3: !position!
+        CALL src\String.bat :find "!variable!" "faS" position
+        ECHO In which position is the first "faS" substring in the string: !position!
+
         ECHO.
         ECHO.
         @REM PAUSE

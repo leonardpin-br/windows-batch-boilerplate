@@ -321,6 +321,112 @@ GOTO :EOF
     GOTO :EOF
 
 
+:find_check_character
+    @REM Auxiliary function used by :find to avoid double expansion (one
+    @REM inside another).
+    @REM
+    @REM To achieve that, it is necessary to work outside the local scope.
+    @REM
+    @REM %~1: The offset.
+    @REM %~2: The iterator from the loop.
+    @REM %~3: Return name.
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\String.bat :find_check_character !offset! %%j %~3
+
+    SETLOCAL
+
+    ( ENDLOCAL & REM
+
+        IF "!content:~%~1,1!" EQU "!find_substr:~%~2,1!" (
+
+            IF %~2 EQU !find_substr_limit! (
+
+                SET /A position=%~1-%~2
+                SET /A %~3=!position!
+
+                @REM This variable will not be used directly. It acts as a hook
+                @REM by the :find function.
+                SET found=True
+
+            )
+
+        )
+
+    )
+    GOTO :EOF
+
+
+:find
+    @REM Returns the lowest index in the given string where the substring was
+    @REM found. Returns -1 if the substring was not found. Optional argument is
+    @REM start. This argument tells this function from where to start.
+    @REM
+    @REM %~1: The string.
+    @REM %~2: The substring we are looking for.
+    @REM %~3: Return name.
+    @REM %~4: Start index position.
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\String.bat :find "!string!" "!find!" return_name start_position
+    @REM
+    @REM    CALL src\String.bat :create_string variable "this is it, isn't it?"
+    @REM    ECHO Given string: !variable!
+    @REM    CALL src\String.bat :find "!variable!" "i" position
+    @REM    ECHO In which position is the first "i" substring in the string: !position!
+    @REM    CALL src\String.bat :find "!variable!" "i" position 3
+    @REM    ECHO And starting from the position 3: !position!
+    @REM    CALL src\String.bat :find "!variable!" "faS" position
+    @REM    ECHO In which position is the first "faS" substring in the string: !position!
+
+
+    SETLOCAL
+
+    ( ENDLOCAL & REM
+
+        CALL src\String.bat :create_string content "%~1"
+        CALL src\String.bat :create_string find_substr "%~2"
+        SET found=
+
+        @REM By default, the return value is -1, that is, not found.
+        SET /A %~3=-1
+
+        @REM Sets the default value for the fourth parameter.
+        SET start_position=%~4
+        IF "!start_position!" EQU "" (
+            SET /A start_position=0
+        )
+
+        @REM Sets the limits for the loops below.
+        SET /A content_limit=!content.length!-1
+        SET /A find_substr_limit=!find_substr.length!-1
+
+        FOR /L %%i IN ( !start_position!, 1, !content_limit! ) DO (
+
+            SET character=!content:~%%i,1!
+
+            IF "!character!" EQU "!find_substr:~0,1!" (
+
+                FOR /L %%j IN ( 0, 1, !find_substr_limit! ) DO (
+
+                    SET /A offset=%%i+%%j
+                    CALL src\String.bat :find_check_character !offset! %%j %~3
+
+                    @REM Checks if the variable was defined.
+                    @REM In practice, it serves as a way to break out of the loop.
+                    IF DEFINED found (
+                        GOTO :EOF
+                    )
+                )
+
+            )
+
+        )
+
+    )
+    GOTO :EOF
+
+
 :starts_with
     @REM Returns (the string) True if the string starts with the substring.
     @REM Otherwise, returns (the string) False.
