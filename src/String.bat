@@ -16,6 +16,8 @@
 @REM    https://stackoverflow.com/a/18743342
 @REM    Udemy - Windows Command Line - Hands-On (CMD, Batch, MS-DOS), Section 2: Redirectors & Applications, 4. Redirectors.
 @REM    https://www.udemy.com/course/the-complete-windows-command-line-course/learn/lecture/16599236#overview
+@REM    Escape Characters
+@REM    https://www.robvanderwoude.com/escapechars.php
 
 
 @REM Checks if this file was called with the function name, and the name exists.
@@ -423,6 +425,62 @@ GOTO :EOF
 
         )
 
+    )
+    GOTO :EOF
+
+
+:is_alpha
+    @REM Returns (the string) True if the string is alphabetical.
+    @REM Otherwise, returns (the string) False.
+    @REM
+    @REM This function has limitations:
+    @REM    ! % | < > & " SPACE could not be excluded as non alphabetical.
+    @REM    Spaces are ignored. So, a string containing spaces is considered alphabetical.
+    @REM
+    @REM %~1: The string.
+    @REM %~2: The substring we are looking for.
+    @REM %~3: Return name.
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\String.bat :is_alpha "!content!" return_name
+    @REM
+    @REM    CALL src\String.bat :create_string string "this"
+    @REM    ECHO Given string: !string!
+    @REM    CALL src\String.bat :is_alpha "!string!" return_name
+    @REM    ECHO Is the given string all alphabetical?
+    @REM    ECHO !return_name!
+
+
+    SETLOCAL
+
+        @REM CALL src\Array.bat :create_array non_alpha "a" "~a`a{a}a[a]a!a%a^a*a-a=a+a_a|a\a/a@a:a;a<a>a?a.a,a#a&a$a(a)a'a1a2a3a4a5a6a7a8a9a0a "
+        CALL src\Array.bat :create_array non_alpha "a" "~a`a{a}a[a]a^^a*a-a=a+a_a\a/a@a:a;a?a.a,a#a$a'a1a2a3a4a5a6a7a8a9a0"
+        CALL src\String.bat :create_string content "%~1"
+
+        SET return=True
+
+        SET /A content_limit=!content.length!-1
+        SET /A non_alpha_limit=!non_alpha.length!-1
+
+        FOR /L %%i IN ( 0, 1, !content_limit! ) DO (
+
+            SET character=!content:~%%i,1!
+
+            FOR /L %%j IN ( 0, 1, !non_alpha_limit! ) DO (
+
+                IF "!character!" EQU "!non_alpha[%%j]!" (
+                    SET return=False
+                    GOTO :is_alpha_end
+                )
+
+            )
+
+        )
+
+        :is_alpha_end
+
+    ( ENDLOCAL & REM
+        IF "%~2" NEQ "" SET %~2=%return%
     )
     GOTO :EOF
 

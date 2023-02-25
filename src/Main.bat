@@ -151,14 +151,20 @@ GOTO :main
         @REM ECHO Ends with "joke."?
         @REM ECHO !does_it!
 
-        CALL src\String.bat :create_string variable "this is it, isn't it?"
-        ECHO Given string: !variable!
-        CALL src\String.bat :find "!variable!" "i" position
-        ECHO In which position is the first "i" substring in the string: !position!
-        CALL src\String.bat :find "!variable!" "i" position 3
-        ECHO And starting from the position 3: !position!
-        CALL src\String.bat :find "!variable!" "faS" position
-        ECHO In which position is the first "faS" substring in the string: !position!
+        @REM CALL src\String.bat :create_string variable "this is it, isn't it?"
+        @REM ECHO Given string: !variable!
+        @REM CALL src\String.bat :find "!variable!" "i" position
+        @REM ECHO In which position is the first "i" substring in the string: !position!
+        @REM CALL src\String.bat :find "!variable!" "i" position 3
+        @REM ECHO And starting from the position 3: !position!
+        @REM CALL src\String.bat :find "!variable!" "faS" position
+        @REM ECHO In which position is the first "faS" substring in the string: !position!
+
+        CALL src\String.bat :create_string string "this"
+        ECHO Given string: !string!
+        CALL src\String.bat :is_alpha "!string!" return_name
+        ECHO Is the given string all alphabetical?
+        ECHO !return_name!
 
         ECHO.
         ECHO.
