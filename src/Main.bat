@@ -129,11 +129,11 @@ GOTO :main
         @REM ECHO !fill!
         @REM CALL src\ColorMessage.bat 3a "!fill!"
 
-        CALL src\String.bat :create_string variable "what are you talking about"
-        ECHO Original string above and capitalized below:
-        ECHO !variable!
-        CALL src\String.bat :capitalize "!variable!" return_name
-        ECHO !return_name!
+        @REM CALL src\String.bat :create_string variable "what are you talking about"
+        @REM ECHO Original string above and capitalized below:
+        @REM ECHO !variable!
+        @REM CALL src\String.bat :capitalize "!variable!" return_name
+        @REM ECHO !return_name!
 
         @REM CALL src\String.bat :create_string variable "This is a joke, isn't it? I think it is."
         @REM ECHO Given string: !variable!
@@ -167,6 +167,12 @@ GOTO :main
         @REM CALL src\String.bat :is_alpha "!string!" return_name
         @REM ECHO Is the given string all alphabetical?
         @REM ECHO !return_name!
+
+        CALL src\String.bat :create_string string "This is a joke"
+        ECHO Given string: !string!
+        CALL src\String.bat :is_lower "!string!" return_name
+        ECHO Is the given string all lowercased?
+        ECHO !return_name!
 
         ECHO.
         ECHO.

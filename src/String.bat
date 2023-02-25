@@ -488,6 +488,54 @@ GOTO :EOF
     )
     GOTO :EOF
 
+:is_lower
+    @REM Return (the string) True if there are no uppercase characters, (the
+    @REM string) False otherwise. Will return (the string) True if there is
+    @REM only numbers or special characters on the string.
+    @REM
+    @REM %~1: The string.
+    @REM %~2: Return name.
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\String.bat :is_lower "!string!" return_name
+    @REM
+    @REM    CALL src\String.bat :create_string string "this is a joke"
+    @REM    ECHO Given string: !string!
+    @REM    CALL src\String.bat :is_lower "!string!" return_name
+    @REM    ECHO Is the given string all lowercased?
+    @REM    ECHO !return_name!
+
+    SETLOCAL
+
+        CALL src\String.bat :create_string content "%~1"
+
+        SET return=True
+
+        SET /A content_limit=!content.length!-1
+        SET /A upper_cased_letters_limit=!upper_cased_letters.length!-1
+
+        FOR /L %%i IN ( 0, 1, !content_limit! ) DO (
+
+            SET character=!content:~%%i,1!
+
+            FOR /L %%j IN ( 0, 1, !upper_cased_letters_limit! ) DO (
+
+                IF "!character!" EQU "!upper_cased_letters[%%j]!" (
+                    SET return=False
+                    GOTO :is_lower_end
+                )
+
+            )
+
+        )
+
+        :is_lower_end
+
+    ( ENDLOCAL & REM
+        IF "%~2" NEQ "" SET %~2=%return%
+    )
+    GOTO :EOF
+
 
 :starts_with
     @REM Returns (the string) True if the string starts with the substring.
