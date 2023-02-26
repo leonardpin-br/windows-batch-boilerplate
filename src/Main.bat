@@ -180,6 +180,12 @@ GOTO :main
         @REM ECHO Is the given string all digits?
         @REM ECHO !return_name!
 
+        CALL src\String.bat :create_string string "WH"
+        ECHO Given string: !string!
+        CALL src\String.bat :is_upper "!string!" return_name
+        ECHO Is the given string all uppercase?
+        ECHO !return_name!
+
         ECHO.
         ECHO.
         @REM PAUSE
