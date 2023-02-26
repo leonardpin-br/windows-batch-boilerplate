@@ -9,9 +9,10 @@
 @REM    https://stackoverflow.com/a/2763907
 
 SET global_var=Inside the global variable
-CALL src\Array.bat :create_array upper_cased_letters "," "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z"
-CALL src\Array.bat :create_array lower_cased_letters "," "a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z"
+CALL src\Array.bat :create_array uppercase_letters "," "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z"
+CALL src\Array.bat :create_array lowercase_letters "," "a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z"
 CALL src\Array.bat :create_array digits "," "1,2,3,4,5,6,7,8,9,0"
+CALL src\Array.bat :create_array special_characters "a" "~a`a{a}a[a]a^^a*a-a=a+a_a\a/a@a:a;a?a.a,a#a$a'"
 
 @REM Below is an array creation of non-alphabetic and non-digit characters.
 @REM But, there are limtations:

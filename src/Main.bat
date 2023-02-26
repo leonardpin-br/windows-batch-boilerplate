@@ -129,7 +129,7 @@ GOTO :main
         @REM ECHO !fill!
         @REM CALL src\ColorMessage.bat 3a "!fill!"
 
-        @REM CALL src\String.bat :create_string variable "what are you talking about"
+        @REM CALL src\String.bat :create_string variable "gwhat are you talking about"
         @REM ECHO Original string above and capitalized below:
         @REM ECHO !variable!
         @REM CALL src\String.bat :capitalize "!variable!" return_name
@@ -168,17 +168,17 @@ GOTO :main
         @REM ECHO Is the given string all alphabetical?
         @REM ECHO !return_name!
 
-        @REM CALL src\String.bat :create_string string "This is a joke"
+        @REM CALL src\String.bat :create_string string "this is a joke"
         @REM ECHO Given string: !string!
         @REM CALL src\String.bat :is_lower "!string!" return_name
         @REM ECHO Is the given string all lowercased?
         @REM ECHO !return_name!
 
-        CALL src\String.bat :create_string string "5234"
-        ECHO Given string: !string!
-        CALL src\String.bat :is_digit "!string!" return_name
-        ECHO Is the given string all digits?
-        ECHO !return_name!
+        @REM CALL src\String.bat :create_string string "5234"
+        @REM ECHO Given string: !string!
+        @REM CALL src\String.bat :is_digit "!string!" return_name
+        @REM ECHO Is the given string all digits?
+        @REM ECHO !return_name!
 
         ECHO.
         ECHO.

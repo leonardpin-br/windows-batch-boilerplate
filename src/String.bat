@@ -71,13 +71,13 @@ GOTO :EOF
 
         SET first=!string:~0,1!
 
-        SET /A for_upper_limit=!upper_cased_letters.length!-1
+        SET /A for_upper_limit=!uppercase_letters.length!-1
 
         FOR /L %%i IN ( 0, 1, !for_upper_limit! ) DO (
 
-            IF !lower_cased_letters[%%i]! EQU !first! (
+            IF !lowercase_letters[%%i]! EQU !first! (
 
-                SET second_parameter=!upper_cased_letters[%%i]!
+                SET second_parameter=!uppercase_letters[%%i]!
                 GOTO :capitalize_end
             )
 
@@ -566,15 +566,15 @@ GOTO :EOF
         SET return=True
 
         SET /A content_limit=!content.length!-1
-        SET /A upper_cased_letters_limit=!upper_cased_letters.length!-1
+        SET /A uppercase_letters_limit=!uppercase_letters.length!-1
 
         FOR /L %%i IN ( 0, 1, !content_limit! ) DO (
 
             SET character=!content:~%%i,1!
 
-            FOR /L %%j IN ( 0, 1, !upper_cased_letters_limit! ) DO (
+            FOR /L %%j IN ( 0, 1, !uppercase_letters_limit! ) DO (
 
-                IF "!character!" EQU "!upper_cased_letters[%%j]!" (
+                IF "!character!" EQU "!uppercase_letters[%%j]!" (
                     SET return=False
                     GOTO :is_lower_end
                 )
