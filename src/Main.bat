@@ -168,10 +168,16 @@ GOTO :main
         @REM ECHO Is the given string all alphabetical?
         @REM ECHO !return_name!
 
-        CALL src\String.bat :create_string string "This is a joke"
+        @REM CALL src\String.bat :create_string string "This is a joke"
+        @REM ECHO Given string: !string!
+        @REM CALL src\String.bat :is_lower "!string!" return_name
+        @REM ECHO Is the given string all lowercased?
+        @REM ECHO !return_name!
+
+        CALL src\String.bat :create_string string "5234"
         ECHO Given string: !string!
-        CALL src\String.bat :is_lower "!string!" return_name
-        ECHO Is the given string all lowercased?
+        CALL src\String.bat :is_digit "!string!" return_name
+        ECHO Is the given string all digits?
         ECHO !return_name!
 
         ECHO.

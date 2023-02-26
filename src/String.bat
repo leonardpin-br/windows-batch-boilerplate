@@ -438,7 +438,7 @@ GOTO :EOF
     @REM Otherwise, returns (the string) False.
     @REM
     @REM This function has limitations:
-    @REM    ! % | < > & " SPACE could not be excluded as non-alphabetical.
+    @REM    ! % | < > & " SPACE could not be excluded as non-alphabetic.
     @REM    Spaces are ignored. So, a string containing spaces is considered alphabetical.
     @REM
     @REM %~1: The string.
@@ -454,25 +454,22 @@ GOTO :EOF
     @REM    ECHO Is the given string all alphabetical?
     @REM    ECHO !return_name!
 
-
     SETLOCAL
 
-        @REM CALL src\Array.bat :create_array non_alpha "a" "~a`a{a}a[a]a!a%a^a*a-a=a+a_a|a\a/a@a:a;a<a>a?a.a,a#a&a$a(a)a'a1a2a3a4a5a6a7a8a9a0a "
-        CALL src\Array.bat :create_array non_alpha "a" "~a`a{a}a[a]a^^a*a-a=a+a_a\a/a@a:a;a?a.a,a#a$a'a1a2a3a4a5a6a7a8a9a0"
         CALL src\String.bat :create_string content "%~1"
 
         SET return=True
 
         SET /A content_limit=!content.length!-1
-        SET /A non_alpha_limit=!non_alpha.length!-1
+        SET /A non_alphabetic_limit=!non_alphabetic.length!-1
 
         FOR /L %%i IN ( 0, 1, !content_limit! ) DO (
 
             SET character=!content:~%%i,1!
 
-            FOR /L %%j IN ( 0, 1, !non_alpha_limit! ) DO (
+            FOR /L %%j IN ( 0, 1, !non_alphabetic_limit! ) DO (
 
-                IF "!character!" EQU "!non_alpha[%%j]!" (
+                IF "!character!" EQU "!non_alphabetic[%%j]!" (
                     SET return=False
                     GOTO :is_alpha_end
                 )
@@ -487,6 +484,63 @@ GOTO :EOF
         IF "%~2" NEQ "" SET %~2=%return%
     )
     GOTO :EOF
+
+
+:is_digit
+    @REM Returns (the string) True if the string has only digits.
+    @REM Otherwise, returns (the string) False.
+    @REM
+    @REM This function has limitations:
+    @REM    ! % | < > & " SPACE could not be excluded as non-digits.
+    @REM    Spaces are ignored. So, a string containing digits and spaces is
+    @REM    considered only digits.
+    @REM
+    @REM %~1: The string.
+    @REM %~2: Return name.
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\String.bat :is_digit "!string!" return_name
+    @REM
+    @REM    CALL src\String.bat :create_string string "5234"
+    @REM    ECHO Given string: !string!
+    @REM    CALL src\String.bat :is_digit "!string!" return_name
+    @REM    ECHO Is the given string all digits?
+    @REM    ECHO !return_name!
+
+    SETLOCAL
+
+        CALL src\String.bat :create_string content "%~1"
+
+        SET return=True
+
+        SET /A content_limit=!content.length!-1
+        SET /A non_digits_limit=!non_digits.length!-1
+
+        @REM Loops as many times as there are characters in the given string.
+        FOR /L %%i IN ( 0, 1, !content_limit! ) DO (
+
+            @REM Each character of the given string is temporarily stored.
+            SET character=!content:~%%i,1!
+
+            @REM Loops as many times as there are items in the digits array.
+            FOR /L %%j IN ( 0, 1, !non_digits_limit! ) DO (
+
+                IF "!character!" EQU "!non_digits[%%j]!" (
+                    SET return=False
+                    GOTO :is_digit_end
+                )
+
+            )
+
+        )
+
+        :is_digit_end
+
+    ( ENDLOCAL & REM
+        IF "%~2" NEQ "" SET %~2=%return%
+    )
+    GOTO :EOF
+
 
 :is_lower
     @REM Return (the string) True if there are no uppercase characters, (the
