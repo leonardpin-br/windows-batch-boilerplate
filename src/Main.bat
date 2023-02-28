@@ -180,11 +180,24 @@ GOTO :main
         @REM ECHO Is the given string all digits?
         @REM ECHO !return_name!
 
-        CALL src\String.bat :create_string string "WH"
-        ECHO Given string: !string!
-        CALL src\String.bat :is_upper "!string!" return_name
-        ECHO Is the given string all uppercase?
-        ECHO !return_name!
+        @REM CALL src\String.bat :create_string string "WH"
+        @REM ECHO Given string: !string!
+        @REM CALL src\String.bat :is_upper "!string!" return_name
+        @REM ECHO Is the given string all uppercase?
+        @REM ECHO !return_name!
+
+        @REM CALL src\Array.bat :create_array folder_list "," "C:,Program Files,Microsoft Office,root"
+        @REM ECHO Array: !folder_list!
+        @REM CALL src\String.bat :join folder_list "\" concatenated_path
+        @REM ECHO The concatenated path is: !concatenated_path!
+
+        CALL src\String.bat :split "E:\cloud\Backup\Libraries" "\" resulting_array ","
+        ECHO The resulting array is: !resulting_array!
+        ECHO Array length: !resulting_array.length!
+        ECHO Index 0 of array: !resulting_array[0]!
+        ECHO Index 1 of array: !resulting_array[1]!
+        ECHO Index 2 of array: !resulting_array[2]!
+        ECHO Index 3 of array: !resulting_array[3]!
 
         ECHO.
         ECHO.

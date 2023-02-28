@@ -640,6 +640,168 @@ GOTO :EOF
     GOTO :EOF
 
 
+:join
+    @REM Takes all items in an iterable and joins them into one string.
+    @REM
+    @REM %~1: The array.
+    @REM %~2: The string character to join the items in the array.
+    @REM %~3: Return name.
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\String.bat :join array_name "character_to_join" return_name
+    @REM
+    @REM    CALL src\Array.bat :create_array folder_list "," "C:,Program Files,Microsoft Office,root"
+    @REM    ECHO Array: !folder_list!
+    @REM    CALL src\String.bat :join folder_list "\" concatenated_path
+    @REM    ECHO The concatenated path is: !concatenated_path!
+
+    SETLOCAL
+
+        SET array=%~1
+        SET character=%~2
+        SET return=
+
+        SET /A array_limit=!array.length!-1
+
+        @REM Loops as many times as there are array elements.
+        FOR /L %%i IN ( 0, 1, !array_limit! ) DO (
+
+            IF NOT %%i EQU !array_limit! (
+                SET return=!return!!%array%[%%i]!!character!
+
+            @REM If it is the last item in the array.
+            ) ELSE (
+                SET return=!return!!%array%[%%i]!
+            )
+
+        )
+
+    ( ENDLOCAL & REM
+        IF "%~3" NEQ "" SET %~3=%return%
+    )
+    GOTO :EOF
+
+
+:split_double_expansion
+    @REM Auxiliary function used by :split to avoid two variable expansions, one
+    @REM inside another.
+    @REM
+    @REM %~1: Temporary variable name.
+    @REM %~2: Content to expand again.
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\String.bat :split_double_expansion new_expansion "content:~!content_offset!,!item_length!"
+
+    SETLOCAL
+
+    @REM To be able to return back the values passed, it was necessary to work
+    @REM inside the block below.
+
+    ( ENDLOCAL & REM
+        CALL src\String.bat :create_string %~1 "!%~2!"
+    )
+    GOTO :EOF
+
+
+:split
+    @REM Return an (pseudo) array with the words in the string, using the given
+    @REM character as the delimiter.
+    @REM
+    @REM %~1: The string.
+    @REM %~2: The character to serve as the separator.
+    @REM %~3: Return name.
+    @REM %~4 (Optional):    The character to serve as the separator in the array.
+    @REM                    Defaults to ",".
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\String.bat :split "string under quotes" "separator character" return_name "optional array separator"
+    @REM
+    @REM    CALL src\String.bat :split "E:\cloud\Backup\Libraries" "\" resulting_array ","
+    @REM    ECHO The resulting array is: !resulting_array!
+    @REM    ECHO Array length: !resulting_array.length!
+    @REM    ECHO Index 0 of array: !resulting_array[0]!
+    @REM    ECHO Index 1 of array: !resulting_array[1]!
+    @REM    ECHO Index 2 of array: !resulting_array[2]!
+    @REM    ECHO Index 3 of array: !resulting_array[3]!
+
+    SETLOCAL
+
+    @REM To be able to return back the values passed, it was necessary to work
+    @REM inside the block below.
+
+    ( ENDLOCAL & REM
+
+        @REM The string creation must occur inside this function to be able to
+        @REM access the .length "property".
+        CALL src\String.bat :create_string content "%~1"
+        SET content_separator=%~2
+
+        @REM Sets the default value for the fourth parameter.
+        IF "%~4" EQU "" (
+            SET array_separator=","
+        ) ELSE (
+            SET array_separator=%~4
+        )
+
+        @REM content_offset marks the beggining of the (future) array element.
+        SET /A content_offset=0
+        SET array_content=
+        SET /A content_limit=!content.length!-1
+
+        @REM Loops as many times as there are characters in the string.
+        FOR /L %%i IN ( 0, 1, !content_limit! ) DO (
+
+            SET character=!content:~%%i,1!
+
+            @REM Each character will be compared against the given separator.
+            IF "!character!" EQU "!content_separator!" (
+
+                SET /A item_length=%%i-!content_offset!
+
+                @REM To avoid double expansion, it is necessary to call an auxiliary function.
+                CALL src\String.bat :split_double_expansion new_expansion "content:~!content_offset!,!item_length!"
+
+                @REM Builds the array content, except for the last item.
+                SET array_content=!array_content!!new_expansion!!array_separator!
+
+                @REM Addin one to the content_offset marks the beggining of the
+                @REM new array element after the separator.
+                SET /A content_offset=%%i+1
+
+            )
+
+        )
+
+        @REM The last array item has no delimiter after it.
+        CALL src\String.bat :split_double_expansion new_expansion "content:~!content_offset!,!content.length!"
+        SET array_content=!array_content!!new_expansion!
+
+        @REM Effectively creates the array.
+        CALL src\Array.bat :create_array return "!array_separator!" "!array_content!"
+
+        @REM Returns all the values.
+        IF "%~3" NEQ "" SET %~3=!return!
+        IF "%~3.length" NEQ "" SET %~3.length=!return.length!
+        SET /A return_limit=!return.length!-1
+        FOR /L %%i IN ( 0, 1, !return_limit! ) DO (
+            IF "%~3[%%i]" NEQ "" SET %~3[%%i]=!return[%%i]!
+        )
+
+        @REM Clears the variables.
+        SET content=
+        SET content_separator=
+        SET /A content_limit=0
+        SET array_separator=
+        SET character=
+        SET array_content=
+        SET /A item_length=0
+        SET /A content_offset=0
+        SET new_expansion=
+        SET return=
+    )
+    GOTO :EOF
+
+
 :starts_with
     @REM Returns (the string) True if the string starts with the substring.
     @REM Otherwise, returns (the string) False.
