@@ -66,7 +66,7 @@ GOTO :EOF
 
     SETLOCAL
 
-        CALL src\String.bat :create_string string "%~1"
+        CALL :create_string string "%~1"
         SET second_parameter=%~2
 
         SET first=!string:~0,1!
@@ -197,8 +197,8 @@ GOTO :EOF
 
     ( ENDLOCAL & REM
 
-        CALL src\String.bat :create_string haystack "%~1"
-        CALL src\String.bat :create_string needle "%~2"
+        CALL :create_string haystack "%~1"
+        CALL :create_string needle "%~2"
 
         @REM Whe should not count the quotes.
         SET /A haystack_limit=!haystack.length!-1
@@ -214,7 +214,7 @@ GOTO :EOF
 
                     SET /A offset=%%i+%%j
 
-                    CALL src\String.bat :count_check_character !offset! %%j %~3
+                    CALL :count_check_character !offset! %%j %~3
 
                 )
 
@@ -303,8 +303,8 @@ GOTO :EOF
 
     SETLOCAL
 
-        CALL src\String.bat :create_string content "%~1"
-        CALL src\String.bat :create_string ends_with "%~2"
+        CALL :create_string content "%~1"
+        CALL :create_string ends_with "%~2"
 
         SET result=True
 
@@ -390,8 +390,8 @@ GOTO :EOF
 
     ( ENDLOCAL & REM
 
-        CALL src\String.bat :create_string content "%~1"
-        CALL src\String.bat :create_string find_substr "%~2"
+        CALL :create_string content "%~1"
+        CALL :create_string find_substr "%~2"
         SET found=
 
         @REM By default, the return value is -1, that is, not found.
@@ -416,7 +416,7 @@ GOTO :EOF
                 FOR /L %%j IN ( 0, 1, !find_substr_limit! ) DO (
 
                     SET /A offset=%%i+%%j
-                    CALL src\String.bat :find_check_character !offset! %%j %~3
+                    CALL :find_check_character !offset! %%j %~3
 
                     @REM Checks if the variable was defined.
                     @REM In practice, it serves as a way to break out of the loop.
@@ -456,7 +456,7 @@ GOTO :EOF
 
     SETLOCAL
 
-        CALL src\String.bat :create_string content "%~1"
+        CALL :create_string content "%~1"
 
         SET return=True
 
@@ -509,7 +509,7 @@ GOTO :EOF
 
     SETLOCAL
 
-        CALL src\String.bat :create_string content "%~1"
+        CALL :create_string content "%~1"
 
         SET return=True
 
@@ -561,7 +561,7 @@ GOTO :EOF
 
     SETLOCAL
 
-        CALL src\String.bat :create_string content "%~1"
+        CALL :create_string content "%~1"
 
         SET return=True
 
@@ -610,7 +610,7 @@ GOTO :EOF
 
     SETLOCAL
 
-        CALL src\String.bat :create_string content "%~1"
+        CALL :create_string content "%~1"
 
         SET return=True
 
@@ -682,6 +682,55 @@ GOTO :EOF
     GOTO :EOF
 
 
+:lower
+    @REM Return a copy of the string with all the cased characters converted to lowercase.
+    @REM
+    @REM %~1: The string.
+    @REM %~2: Return name.
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\String.bat :lower "string" return_name
+    @REM
+    @REM    CALL src\String.bat :lower "WHAT NOO" return_name
+    @REM    ECHO Given string: WHAT NOO
+    @REM    ECHO The return is: !return_name!
+
+    SETLOCAL
+
+        CALL :create_string content "%~1"
+        SET return=
+
+        SET /A content_limit=!content.length!-1
+        SET /A uppercase_letters_limit=!uppercase_letters.length!-1
+
+        @REM Loops as many times as there are characters in the given string.
+        FOR /L %%i IN ( 0, 1, !content_limit! ) DO (
+
+            SET character=!content:~%%i,1!
+
+            @REM Loops through the uppercase_letters (pseudo) array.
+            FOR /L %%j IN ( 0, 1, !uppercase_letters_limit! ) DO (
+
+                IF "!character!" EQU "!uppercase_letters[%%j]!" (
+
+                    @REM Swaps the uppercase for the lowercase.
+                    SET character=!lowercase_letters[%%j]!
+
+                )
+
+            )
+
+            @REM Builds the return string.
+            SET return=!return!!character!
+
+        )
+
+    ( ENDLOCAL & REM
+        IF "%~2" NEQ "" SET %~2=%return%
+    )
+    GOTO :EOF
+
+
 :split_double_expansion
     @REM Auxiliary function used by :split to avoid two variable expansions, one
     @REM inside another.
@@ -698,7 +747,7 @@ GOTO :EOF
     @REM inside the block below.
 
     ( ENDLOCAL & REM
-        CALL src\String.bat :create_string %~1 "!%~2!"
+        CALL :create_string %~1 "!%~2!"
     )
     GOTO :EOF
 
@@ -733,7 +782,7 @@ GOTO :EOF
 
         @REM The string creation must occur inside this function to be able to
         @REM access the .length "property".
-        CALL src\String.bat :create_string content "%~1"
+        CALL :create_string content "%~1"
         SET content_separator=%~2
 
         @REM Sets the default value for the fourth parameter.
@@ -759,7 +808,7 @@ GOTO :EOF
                 SET /A item_length=%%i-!content_offset!
 
                 @REM To avoid double expansion, it is necessary to call an auxiliary function.
-                CALL src\String.bat :split_double_expansion new_expansion "content:~!content_offset!,!item_length!"
+                CALL :split_double_expansion new_expansion "content:~!content_offset!,!item_length!"
 
                 @REM Builds the array content, except for the last item.
                 SET array_content=!array_content!!new_expansion!!array_separator!
@@ -773,7 +822,7 @@ GOTO :EOF
         )
 
         @REM The last array item has no delimiter after it.
-        CALL src\String.bat :split_double_expansion new_expansion "content:~!content_offset!,!content.length!"
+        CALL :split_double_expansion new_expansion "content:~!content_offset!,!content.length!"
         SET array_content=!array_content!!new_expansion!
 
         @REM Effectively creates the array.
@@ -819,8 +868,8 @@ GOTO :EOF
 
     SETLOCAL
 
-        CALL src\String.bat :create_string content "%~1"
-        CALL src\String.bat :create_string starts_with "%~2"
+        CALL :create_string content "%~1"
+        CALL :create_string starts_with "%~2"
 
         SET /A limit=!starts_with.length!-1
         SET result=True

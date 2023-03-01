@@ -191,13 +191,17 @@ GOTO :main
         @REM CALL src\String.bat :join folder_list "\" concatenated_path
         @REM ECHO The concatenated path is: !concatenated_path!
 
-        CALL src\String.bat :split "E:\cloud\Backup\Libraries" "\" resulting_array ","
-        ECHO The resulting array is: !resulting_array!
-        ECHO Array length: !resulting_array.length!
-        ECHO Index 0 of array: !resulting_array[0]!
-        ECHO Index 1 of array: !resulting_array[1]!
-        ECHO Index 2 of array: !resulting_array[2]!
-        ECHO Index 3 of array: !resulting_array[3]!
+        @REM CALL src\String.bat :split "E:\cloud\Backup\Libraries" "\" resulting_array ","
+        @REM ECHO The resulting array is: !resulting_array!
+        @REM ECHO Array length: !resulting_array.length!
+        @REM ECHO Index 0 of array: !resulting_array[0]!
+        @REM ECHO Index 1 of array: !resulting_array[1]!
+        @REM ECHO Index 2 of array: !resulting_array[2]!
+        @REM ECHO Index 3 of array: !resulting_array[3]!
+
+        CALL src\String.bat :lower "WHAT NOO" return_name
+        ECHO Given string: WHAT NOO
+        ECHO The return is: !return_name!
 
         ECHO.
         ECHO.
