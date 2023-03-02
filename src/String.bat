@@ -891,3 +891,52 @@ GOTO :EOF
         IF "%~3" NEQ "" SET %~3=%result%
     )
     GOTO :EOF
+
+
+:upper
+    @REM Return a copy of the string with all the cased characters converted to uppercase.
+        @REM
+        @REM %~1: The string.
+        @REM %~2: Return name.
+        @REM
+        @REM How to use this function:
+        @REM    CALL src\String.bat :upper "string" return_name
+        @REM
+        @REM    CALL src\String.bat :upper "This should all be uppercase!" return
+        @REM    ECHO Given string: "This should all be uppercase!"
+        @REM    ECHO The return is: "!return!"
+
+    SETLOCAL
+
+        CALL :create_string content "%~1"
+        SET return=
+
+        SET /A content_limit=!content.length!-1
+        SET /A lowercase_letters_limit=!lowercase_letters.length!-1
+
+        @REM Loops as many times as there are characters in the given string.
+        FOR /L %%i IN ( 0, 1, !content_limit! ) DO (
+
+            SET character=!content:~%%i,1!
+
+            @REM Loops through the lowercase_letters (pseudo) array.
+            FOR /L %%j IN ( 0, 1, !lowercase_letters_limit! ) DO (
+
+                IF "!character!" EQU "!lowercase_letters[%%j]!" (
+
+                    @REM Swaps the uppercase for the lowercase.
+                    SET character=!uppercase_letters[%%j]!
+
+                )
+
+            )
+
+            @REM Builds the return string.
+            SET return=!return!!character!
+
+        )
+
+    ( ENDLOCAL & REM
+        IF "%~2" NEQ "" SET %~2=%return%
+    )
+    GOTO :EOF

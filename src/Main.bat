@@ -199,9 +199,13 @@ GOTO :main
         @REM ECHO Index 2 of array: !resulting_array[2]!
         @REM ECHO Index 3 of array: !resulting_array[3]!
 
-        CALL src\String.bat :lower "WHAT NOO" return_name
-        ECHO Given string: WHAT NOO
-        ECHO The return is: !return_name!
+        @REM CALL src\String.bat :lower "WHATT? 5234 NOOO" return_name
+        @REM ECHO Given string: "WHATT? 5234 NOOO"
+        @REM ECHO The return is: !return_name!
+
+        CALL src\String.bat :upper "This should all be uppercase!" return
+        ECHO Given string: "This should all be uppercase!"
+        ECHO The return is: "!return!"
 
         ECHO.
         ECHO.
