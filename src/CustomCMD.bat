@@ -12,6 +12,8 @@
 @REM REFERENCES:
 @REM    Batch Tutorials
 @REM    https://www.youtube.com/playlist?list=PL69BE3BF7D0BB69C4
+@REM    Is there windows equivalent to the .bashrc file in linux?
+@REM    https://superuser.com/a/916478/346546
 
 @ECHO OFF
 
@@ -28,9 +30,6 @@ IF "!title!" EQU "" (
 )
 
 TITLE !title!
-
-@REM Clears the screen.
-CLS
 
 :run
     @REM These are the colors that can be used inside a Batch script (color /?):
@@ -49,14 +48,20 @@ CLS
     @REM Clears the variable in case it was used earlier.
     SET input=
 
-    @REM The first terminal information.
+    @REM Username and computer name.
     CALL !colormsg! A "(!USERNAME!@!COMPUTERNAME!)" &
+
+    @REM Identifies this terminal as the CMD.
+    CALL !colormsg! 9 " CMD " &
+
+    @REM Second terminal information.
+    CALL !colormsg! E "!CD!" &
 
     @REM Creates a line break.
     ECHO. &
 
-    @REM Second terminal information.
-    CALL !colormsg! E "!CD!" & CALL !colormsg! 9 " > "
+    @REM The user will type in the next line (just like Cygwin and Git Bash).
+    CALL !colormsg! 9 "> "
 
     @REM Captures the user input command.
     SET /P input=
