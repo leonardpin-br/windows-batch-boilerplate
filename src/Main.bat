@@ -203,8 +203,12 @@ GOTO :main
         @REM ECHO Given string: "WHATT? 5234 NOOO"
         @REM ECHO The return is: !return_name!
 
-        CALL src\String.bat :upper "This should all be uppercase!" return
-        ECHO Given string: "This should all be uppercase!"
+        @REM CALL src\String.bat :upper "This should all be uppercase!" return
+        @REM ECHO Given string: "This should all be uppercase!"
+        @REM ECHO The return is: "!return!"
+
+        CALL src\String.bat :swapcase "John Hammond after more 1234,;" return
+        ECHO Given string: "John Hammond after more 1234,;"
         ECHO The return is: "!return!"
 
         ECHO.
