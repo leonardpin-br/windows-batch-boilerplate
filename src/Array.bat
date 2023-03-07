@@ -57,6 +57,7 @@ GOTO :EOF
     @REM    ECHO Given array: !array!
     @REM    CALL src\Array.bat :append array "," "missing"
     @REM    ECHO Appended array: !array!
+    @REM    ECHO Appended array.length: !array.length!
     @REM    ECHO Array index 0: !array[0]!
     @REM    ECHO Array index 1: !array[1]!
     @REM    ECHO Array index 2: !array[2]!
@@ -69,12 +70,11 @@ GOTO :EOF
 
         SET /A temporary=!%~1.length!
 
-        SET /A %~1.length=!temporary!+1
         SET result=!%~1!!delimiter!!add!
-
 
     ( ENDLOCAL & REM
         SET %~1[%temporary%]=%add%
+        SET /A %~1.length=%temporary%+1
         SET %~1=%result%
     )
     GOTO :EOF

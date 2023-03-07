@@ -215,6 +215,7 @@ GOTO :main
         ECHO Given array: !array!
         CALL src\Array.bat :append array "," "missing"
         ECHO Appended array: !array!
+        ECHO Appended array.length: !array.length!
         ECHO Array index 0: !array[0]!
         ECHO Array index 1: !array[1]!
         ECHO Array index 2: !array[2]!
