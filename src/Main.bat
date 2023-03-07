@@ -207,9 +207,18 @@ GOTO :main
         @REM ECHO Given string: "This should all be uppercase!"
         @REM ECHO The return is: "!return!"
 
-        CALL src\String.bat :swapcase "John Hammond after more 1234,;" return
-        ECHO Given string: "John Hammond after more 1234,;"
-        ECHO The return is: "!return!"
+        @REM CALL src\String.bat :swapcase "John Hammond after more 1234,;" return
+        @REM ECHO Given string: "John Hammond after more 1234,;"
+        @REM ECHO The return is: "!return!"
+
+        CALL src\Array.bat :create_array array "," "What,am,I"
+        ECHO Given array: !array!
+        CALL src\Array.bat :append array "," "missing"
+        ECHO Appended array: !array!
+        ECHO Array index 0: !array[0]!
+        ECHO Array index 1: !array[1]!
+        ECHO Array index 2: !array[2]!
+        ECHO Array index 3: !array[3]!
 
         ECHO.
         ECHO.

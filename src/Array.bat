@@ -46,6 +46,40 @@ IF "%~1" NEQ "" (
 GOTO :EOF
 
 
+:append
+    @REM Append a new item to the end of the array.
+    @REM
+    @REM %~1: Array name.
+    @REM %~2: Delimiter.
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\Array.bat :create_array array "," "What,am,I"
+    @REM    ECHO Given array: !array!
+    @REM    CALL src\Array.bat :append array "," "missing"
+    @REM    ECHO Appended array: !array!
+    @REM    ECHO Array index 0: !array[0]!
+    @REM    ECHO Array index 1: !array[1]!
+    @REM    ECHO Array index 2: !array[2]!
+    @REM    ECHO Array index 3: !array[3]!
+
+    SETLOCAL
+
+        CALL src\String.bat :create_string delimiter "%~2"
+        CALL src\String.bat :create_string add "%~3"
+
+        SET /A temporary=!%~1.length!
+
+        SET /A %~1.length=!temporary!+1
+        SET result=!%~1!!delimiter!!add!
+
+
+    ( ENDLOCAL & REM
+        SET %~1[%temporary%]=%add%
+        SET %~1=%result%
+    )
+    GOTO :EOF
+
+
 :create_array_set_index
     @REM Auxiliary function used by :create_array to avoid two variable
     @REM expansions, one inside another.
