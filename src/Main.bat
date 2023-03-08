@@ -211,15 +211,20 @@ GOTO :main
         @REM ECHO Given string: "John Hammond after more 1234,;"
         @REM ECHO The return is: "!return!"
 
-        CALL src\Array.bat :create_array array "," "What,am,I"
+        @REM CALL src\Array.bat :create_array array "," "What,am,I"
+        @REM ECHO Given array: !array!
+        @REM CALL src\Array.bat :append array "," "missing"
+        @REM ECHO Appended array: !array!
+        @REM ECHO Appended array.length: !array.length!
+        @REM ECHO Array index 0: !array[0]!
+        @REM ECHO Array index 1: !array[1]!
+        @REM ECHO Array index 2: !array[2]!
+        @REM ECHO Array index 3: !array[3]!
+
+        CALL src\Array.bat :create_array array "," "this,is,a,fish,is,it,not"
         ECHO Given array: !array!
-        CALL src\Array.bat :append array "," "missing"
-        ECHO Appended array: !array!
-        ECHO Appended array.length: !array.length!
-        ECHO Array index 0: !array[0]!
-        ECHO Array index 1: !array[1]!
-        ECHO Array index 2: !array[2]!
-        ECHO Array index 3: !array[3]!
+        CALL src\Array.bat :count array "is" return_name
+        ECHO Number of occurrences of "is" in the array: !return_name!
 
         ECHO.
         ECHO.

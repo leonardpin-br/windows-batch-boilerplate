@@ -51,6 +51,7 @@ GOTO :EOF
     @REM
     @REM %~1: Array name.
     @REM %~2: Delimiter.
+    @REM %~3: Item to append.
     @REM
     @REM How to use this function:
     @REM    CALL src\Array.bat :create_array array "," "What,am,I"
@@ -204,6 +205,40 @@ GOTO :EOF
         SET string_delimiter=
         SET /A array_index=0
 
+    )
+    GOTO :EOF
+
+
+:count
+    @REM Return the number of occurrences of a given item in the array.
+    @REM
+    @REM %~1: Array name.
+    @REM %~2: Item to search for.
+    @REM %~3: The return name.
+    @REM
+    @REM How to use this function:
+    @REM    CALL src\Array.bat :create_array array "," "this,is,a,fish,is,it,not"
+    @REM    ECHO Given array: !array!
+    @REM    CALL src\Array.bat :count array "is" return_name
+    @REM    ECHO Number of occurrences of "is" in the array: !return_name!
+
+    SETLOCAL
+
+        CALL src\String.bat :create_string item_to_find "%~2"
+
+        SET /A limit=!%~1.length!-1
+        SET /A count=0
+
+        FOR /L %%i IN ( 0, 1, !limit! ) DO (
+
+            IF "!%~1[%%i]!" EQU "!item_to_find!" (
+                SET /A count=!count!+1
+            )
+
+        )
+
+    ( ENDLOCAL & REM
+        SET %~3=%count%
     )
     GOTO :EOF
 
